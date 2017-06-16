@@ -1,54 +1,60 @@
 <view class="contain">
-  <view class="account">
-    <view class="head">
-      <image class="logo" src="/images/register/logo@2x.png"></image>
-      <view class="title">
-        <text>雀巢咖啡</text>
+  <view hidden="{{loginStatus}}">
+    <view  class="account">
+      <view class="head">
+        <image class="logo" src="/images/register/logo@2x.png"></image>
+        <view class="title">
+          <text>雀巢咖啡</text>
+          
+        </view>
+        <view class="btnLogin" bindtap="loginOut"> 退出登录</view>
+      </view>
+      <view class="accountBalance">
+        <view class="balance">
+          <text class="accountMoney">{{balance}}</text>
+          <!--<image  class="iconInfo" src="/images/register/iphone.png"></image>-->
+          <image bindtap="info" class="iconInfo" src="/images/register/info.png"></image>
+        </view>   
         
+        <text class="moneyDes">账户余额（元）</text>
       </view>
-      <view class="btnLogin" bindtap="loginOut"> 退出登录</view>
+      <view class="accountDetial">
+        <view class="accountList">
+          <text class="moneyCount">{{available}}</text>
+          <text class="moneyDes">可用余额（元）</text>
+        </view>
+        <view class="accountList">
+          <text class="moneyCount">{{income}}</text>
+          <text class="moneyDes">累计收益（元）</text>
+        </view>
+        <view class="accountList">
+          <text class="moneyCount">{{watting}}</text>
+          <text class="moneyDes">待还余额（元）</text>
+        </view>
+      </view>
     </view>
-    <view class="accountBalance">
-      <view class="balance">
-        <text class="accountMoney">{{balance}}</text>
-        <!--<image  class="iconInfo" src="/images/register/iphone.png"></image>-->
-        <image bindtap="info" class="iconInfo" src="/images/register/info.png"></image>
-      </view>   
-      
-      <text class="moneyDes">账户余额（元）</text>
+    <view class="accountDetial rewardDetial">
+      <view class="accountList brderRight" bindtap="experience">
+        <image class="experienceImg" src="/images/register/experience.png"></image>
+        <text class="moneyCount experienceDtl">我的体验金</text>
+      </view>
+      <view class="accountList" bindtap="reward">
+        <image class="rewardImg" src="/images/register/reward.png"></image>
+        <text class="moneyCount rewardDtl">活动奖励</text>
+      </view>
     </view>
-    <view class="accountDetial">
-      <view class="accountList">
-        <text class="moneyCount">{{available}}</text>
-        <text class="moneyDes">可用余额（元）</text>
-      </view>
-      <view class="accountList">
-        <text class="moneyCount">{{income}}</text>
-        <text class="moneyDes">累计收益（元）</text>
-      </view>
-      <view class="accountList">
-        <text class="moneyCount">{{watting}}</text>
-        <text class="moneyDes">待还余额（元）</text>
+    <view class="inviteContain">
+      <view class="inviteHead">分享我的邀请码赚取收益</view>
+      <view class="inviteReward">每邀请一人获得收益，最高获得15000元</view>
+      <view class="inviteCode">
+        <text>复制邀请码：</text>
+        <text selectable="true">123821738</text>
       </view>
     </view>
   </view>
-  <view class="accountDetial rewardDetial">
-    <view class="accountList brderRight" bindtap="experience">
-      <image class="experienceImg" src="/images/register/experience.png"></image>
-      <text class="moneyCount experienceDtl">我的体验金</text>
-    </view>
-    <view class="accountList" bindtap="reward">
-      <image class="rewardImg" src="/images/register/reward.png"></image>
-      <text class="moneyCount rewardDtl">活动奖励</text>
-    </view>
+  <view class="account loginAccount" hidden="{{!loginStatus}}">
+    <image class="logoImg" src="/images/register/logo@3x.png"></image>
+    <button bindtap="login" hover-class="none" class="loginBtn">登陆</button>
   </view>
 
-  <view class="inviteContain">
-    <view class="inviteHead">分享我的邀请码赚取收益</view>
-    <view class="inviteReward">每邀请一人获得收益，最高获得15000元</view>
-    <view class="inviteCode">
-      <text>复制邀请码：</text>
-      <text selectable="true">123821738</text>
-    </view>
-  </view>
 </view>

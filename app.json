@@ -1,12 +1,14 @@
 {
     "pages": [
-        "pages/index/invest-detail/invest-detail",
         "pages/index/index",
+        "pages/mine/mine",
+        "pages/index/invest-detail/invest-detail",
         "pages/mine/register/register",
         "pages/animation/animation",
-        "pages/mine/mine",
+        
         "pages/calc/calc",
-        "pages/index/introduce/introduce"
+        "pages/index/introduce/introduce",
+        "pages/mine/register/register"
     ],
     "window": {
         "navigationBarBackgroundColor": "#fff",

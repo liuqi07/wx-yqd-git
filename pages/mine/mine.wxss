@@ -187,5 +187,28 @@ page{
   margin-top: 10rpx;
   padding-top: 50rpx;
   padding-bottom: 35rpx;
-
+}
+.loginAccount{
+  text-align: center;
+  height: 400rpx;
+}
+.logoImg{
+  width: 90rpx;
+  height: 90rpx;
+  margin: 50rpx 0rpx;
+}
+.loginBtn{
+  width: 120rpx;
+  height: 60rpx;
+  /*display: inline-block;*/
+  border-radius: 10rpx;
+  line-height: 60rpx;
+  color: #fff;
+  font-size: 30rpx;
+}
+button{
+  background: none;
+}
+button::after{
+  border: 0rpx;
 }
