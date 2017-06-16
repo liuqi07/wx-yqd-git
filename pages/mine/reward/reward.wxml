@@ -1,0 +1,28 @@
+<!--reward.wxml-->
+<view class="body">
+  <view class="nav bc_white">
+    <view class="default {{selected?'active':''}}" bindtap="selected">
+    <text>我的红包</text></view>
+    <view class="default {{selected1?'active':''}}" bindtap="selected1"><text>我的加息券</text></view>
+    <view class="default {{selected2?'active':''}}" bindtap="selected2"><text>我的奖励</text></view>
+  </view>
+  <view  hidden="{{!selected}}">
+    <view class="tick">
+      <view class="tickL">
+        <view class="lTop">fdsaf</view>
+        <view class="lBot">fdsaf</view>
+      </view>
+      <view class="tickR">
+        <image class="askIcon" src="/images/register/askIcon.png"></image>
+        <view class="packet">激活红包</view>
+        <view class="packetInfo">
+          自发放之日起<text>7</text>日内
+        </view>
+      </view>
+    </view>
+
+  
+  </view>
+  <view hidden="{{!selected1}}">f2</view>
+   <view  hidden="{{!selected2}}">f3</view>
+</view>

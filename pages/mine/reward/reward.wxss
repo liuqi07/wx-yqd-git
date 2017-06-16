@@ -1,0 +1,60 @@
+/* reward.wxss */
+page{background-color:#edf0f3;}
+.nav{width:100%;height:100rpx;display:flex;flex-direction:row;}
+.default{line-height:100rpx;text-align:center;flex:1;font-size:28rpx;}
+.default text{
+  position: relative;
+}
+.default.active text::before{
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 6rpx;
+  background: red;
+  bottom: -20rpx;
+  left: 0;
+  }
+.tick{
+  width: 652rpx;
+  height: 230rpx;
+  /*background: red;*/
+  margin: 0 auto;
+  display: flex;
+  background: #fff;
+}
+.tickL{
+  background: red;
+  flex-grow: 1;
+}
+.tickR{
+  width: 252rpx;
+  /*background: green;*/
+  flex-shrink:0;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 70rpx;
+  
+}
+.askIcon{
+  width: 31rpx;
+  height: 31rpx;
+  position: absolute;
+  top: 9rpx;
+  right: 14rpx;
+}
+.packet{
+  width: 190rpx;
+  height: 50rpx;
+  color: #c5262a;
+  font-size:30rpx;
+  border: 2px solid #c5262a;
+  border-radius: 10rpx;
+  text-align: center;
+  line-height: 50rpx;
+  margin: 0 auto;
+}
+.packetInfo{
+  padding-top: 40rpx;
+  font-size: 24rpx;
+  text-align: center;
+}

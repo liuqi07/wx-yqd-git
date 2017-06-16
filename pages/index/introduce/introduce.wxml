@@ -1,0 +1,35 @@
+<view class="container">
+    <swiper indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(219,211,211,0.7)" indicator-active-color="rgba(153,153,153,0.7)">
+        <block wx:for="{{introduceList}}">
+            <swiper-item>
+                <view class="page">
+                    <image class="img" src="{{'/images/icons/'+item.img}}"></image>
+                    <text class="title">{{ item.title }}</text>
+                    <view class="content">
+                        <block wx:for="{{item.item}}">
+                            <view class="item">
+                                <text>{{index+1}}、{{item}}</text>
+                            </view>
+                        </block>
+                    </view>
+                </view>
+            </swiper-item>
+        </block>
+        <!--<swiper-item>
+            <view class="page">
+                <image class="img" src="/images/icons/safe.png"></image>
+                <text class="title">资金安全</text>
+                <view class="content">
+                    <view class="item">
+                        <text class="order">1、</text>
+                        <text>云钱袋是东方银谷打造的互联网金融信息服务平台，专业团队把控风险。</text>
+                    </view>
+                    <view class="item">
+                        <text class="order">2、</text>
+                        <text>云钱袋拥有82万注册用户，累计出借金额突破66亿元。</text>
+                    </view>
+                </view>
+            </view>
+        </swiper-item>-->
+    </swiper>
+</view>

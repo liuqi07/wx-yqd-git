@@ -1,0 +1,76 @@
+<!--register.wxml-->
+
+  
+<view class="registerContain">
+  <!--手机号-->
+  <view class="weui-search-bar">
+      <view class="weui-search-bar__form">
+          <view class="weui-search-bar__box">
+             <image class="icon" src="/images/register/phone.png"></image>
+              <input type="number" data-name="phoneVal" maxlength="11" class="weui-search-bar__input" placeholder="请输入手机号" value="{{phoneVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+              <view class="weui-icon-clear" wx:if="{{phoneVal.length > 0}}" bindtap="clearInput" data-del="phoneVal">
+                  <image class="clear" src="/images/register/clear.png"></image>
+              </view>
+          </view>
+      </view>
+  </view>
+  <!--图形验证码-->
+  <view class="weui-search-bar">
+      <view class="weui-search-bar__form">
+          <view class="weui-search-bar__box">
+              <image class="icon imgIcon" src="/images/register/imgCode.png"></image>
+              <input type="text" data-name="imgCode" class="weui-search-bar__input" placeholder="请输入验证码" value="{{imgCode}}" bindinput="inputTyping"/>
+              <view class="weui-icon-clear" wx:if="{{imgCode.length > 0}}" bindtap="clearInput" data-del="imgCode">
+                  <image  class="clear" src="/images/register/clear.png"></image>
+              </view>
+          </view>
+      </view>
+      <image bindtap="changeImg" class="imgCode" src="{{imgCodeUrl}}"></image>
+  </view>
+  <!--验证码-->
+    <view class="weui-search-bar">
+      <view class="weui-search-bar__form">
+          <view class="weui-search-bar__box">
+              <image class="icon mark" src="/images/register/mark.png"></image>
+              <input type="text" data-name="authCode" class="weui-search-bar__input" placeholder="请输入短信验证码" value="{{authCode}}" bindinput="inputTyping" />
+              <view class="weui-icon-clear" wx:if="{{authCode.length > 0}}" bindtap="clearInput" data-del="authCode">
+                  <image class="clear" src="/images/register/clear.png"></image>
+              </view>
+          </view>
+          <button disabled="{{codeFlag}}" class="weui-search-bar__cancel-btn"  bindtap="checkImgCode">{{codeFlag?count+"s重新获取":"获取验证码"}}</button>
+      </view>
+  </view>
+<!--邀请码-->
+  <view class="weui-search-bar">
+      <view class="weui-search-bar__form">
+          <view class="weui-search-bar__box">
+             <image class="icon invitCode" src="/images/register/invitCode.png"></image>
+              <input type="text" class="weui-search-bar__input" placeholder="邀请码（选填）" value="{{invitCode}}" data-name="invitCode" bindinput="inputTyping" />
+              <view class="weui-icon-clear" wx:if="{{invitCode.length > 0}}" bindtap="clearInput" data-del="invitCode">
+                  <image class="clear" src="/images/register/clear.png"></image>
+              </view>
+          </view>
+      </view>
+  </view>
+
+
+
+  <checkbox-group bindchange="checkboxChange" class="checkContain">
+    <checkbox color="#78b7ed" class="check" checked="{{checkedFlag}}"/>
+    <label class="checkbox">
+      
+      <view class="agreement">
+        <text>我已阅读并同意</text>
+        <navigator class="agreementDet" url="/page/navigate/navigate?title=navigate" >《云钱袋用户使用协议》</navigator>
+      </view>
+      
+    </label>
+  </checkbox-group>
+
+   <button class="btnShare" bindtap="register" hover-class="other-button-hover">登陆</button>
+
+
+</view>
+
+
+

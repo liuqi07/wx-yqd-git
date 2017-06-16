@@ -1,0 +1,16 @@
+.condition-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 10rpx;
+}
+.condition-container .condition-item{
+    width: 110rpx;
+    height: 40rpx;
+    text-align: center;
+    line-height: 40rpx;
+    font-size: 24rpx;
+    margin-right: 15rpx;
+    background-color: #e9f0fc;
+    color: #757b8c;
+}

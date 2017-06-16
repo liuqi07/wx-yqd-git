@@ -1,0 +1,58 @@
+/* invest-tpl.wxss */
+@import "../condition/condition-tpl.wxss";
+
+.invest-container {
+    height: 294rpx;
+    background-color: #fff;
+    /*padding: 0 20rpx;*/
+    margin-bottom: 20rpx;
+}
+.invest-container .invest-header {
+    height: 80rpx;
+    line-height: 80rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #666;
+    font-size: 28rpx;
+    letter-spacing: 3rpx;
+    border-bottom: 1px solid #ccc;
+    padding: 0 20rpx;
+}
+.invest-header-per .per {
+    color: #ff6767;
+}
+.invest-content {
+    display: flex;
+    flex-direction: row;
+    padding: 22rpx 20rpx 0 68rpx;
+}
+.invest-content-left {
+    width: 320rpx;
+    display: flex;
+    flex-direction: column;
+}
+.invest-content-left .annualized{
+    color: #3f99e6;
+    font-size: 36rpx;
+}
+.invest-content-left .annualized text {
+    font-size: 74rpx;
+}
+.invest-content-left .text {
+    height: 92rpx;
+    line-height: 92rpx;
+    font-size: 22rpx;
+    color: #a4a8bb;
+}
+
+.invest-content-right {
+    display: flex;
+    flex-direction: column;
+}
+.invest-content-right .text {
+    line-height: 96rpx;
+    color: #394675;
+    font-size: 40rpx;
+    font-weight: 800;
+}

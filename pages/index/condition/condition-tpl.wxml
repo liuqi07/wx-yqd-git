@@ -1,0 +1,7 @@
+<template name="condition-tpl">
+    <view class="condition-container">
+        <view class="condition-item">{{ProjectPeriod}}</view>
+        <view class="condition-item">{{ProjectAmount}}</view>
+        <view class="condition-item">{{MinimumInvestAmount}}</view>
+    </view>
+</template>

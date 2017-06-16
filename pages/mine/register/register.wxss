@@ -1,0 +1,200 @@
+/* register.wxss */
+page{
+  height:100%;
+  /*background: red;*/
+  width: 100%;
+}
+.registerContain{
+  height: 100%;
+  background: #f5f5f5;
+}
+.icon{
+  width: 40rpx;
+  height: 50rpx;
+  display: inline-block;
+  position:absolute;
+  left:20rpx;
+  top:25rpx;
+}
+.clear{
+  width: 40rpx;
+  height: 40rpx;
+  position:absolute;
+  top:30rpx;
+  right:20rpx;
+}
+.imgCode{
+  width: 300rpx;
+  height: 100rpx;
+}
+.mark{
+  width: 40rpx;
+  height: 40rpx;
+  top: 30rpx;
+  
+}
+.imgIcon{
+  width: 31rpx;
+  height: 42rpx;
+  top: 29rpx;
+}
+.invitCode{
+  width: 29rpx;
+  height: 26rpx;
+  top: 37rpx;
+}
+.check{
+  color: red;
+}
+div .wx-checkbox-input{
+  width: 400px;
+  height: 400px;
+}
+.checkContain{
+  display: flex;
+  font-size: 30rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding-left: 8%;
+  position: relative;
+  margin-top: 80rpx;
+}
+.agreement{
+  display: inline-block;
+  position: absolute;
+  top: 4rpx;
+  font-size: 24rpx;
+}
+.agreementDet{
+  display: inline-block;
+  color: #289fe1;
+}
+.btnShare{
+  width: 84%;
+  margin:40rpx  auto;
+  height: 100rpx;
+  /*border-radius: 50rpx;*/
+  background: #116fba;
+  line-height: 100rpx;
+  border: none;
+  color: #fff;
+  font-size: 36rpx;
+}
+
+/*weUI*/
+.weui-search-bar {
+  position: relative;
+  padding: 20rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  box-sizing: border-box;
+}
+.weui-icon-search {
+  margin-right: 8px;
+  font-size: inherit;
+}
+.weui-icon-search_in-box {
+  position: absolute;
+  left: 10px;
+  top: 7px;
+}
+.weui-search-bar__text {
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: middle;
+}
+.weui-search-bar__form {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+          flex: auto;
+  border-radius: 5px;
+  background: #FFFFFF;
+  border: 1rpx solid #E6E6EA;
+  display: flex;
+}
+.weui-search-bar__box {
+  position: relative;
+  padding-left: 90rpx;
+  padding-right: 60rpx;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.weui-search-bar__input {
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 28rpx;
+}
+.weui-icon-clear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 7px 8px;
+  font-size: 0;
+}
+.weui-search-bar__label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  border-radius: 3px;
+  text-align: center;
+  color: #9B9B9B;
+  background: #FFFFFF;
+  line-height: 28px;
+}
+.weui-search-bar__cancel-btn {
+  /*margin-left: 10px;*/
+  line-height: 100rpx;
+  color: #289fe1;
+  white-space: nowrap;
+  font-size: 28rpx;
+  margin-right: 20rpx;
+  background: #fff;
+  padding: 0;
+  border: none;
+  width: 220rpx;
+}
+.weui-vcode-btn {
+  display: inline-block;
+  height: 2.58823529em;
+  margin-left: 5px;
+  padding: 0 0.6em 0 0.7em;
+  border-left: 1px solid #E5E5E5;
+  line-height: 2.58823529em;
+  vertical-align: middle;
+  font-size: 17px;
+  color: #3CC51F;
+  white-space: nowrap;
+}
+.weui-vcode-btn:active {
+  color: #52a341;
+}
+
+/*button*/
+button{
+  overflow: none;
+}
+button::after {
+content:" ";
+width:200%;
+height:200%;
+position:absolute;
+top:0;
+left:0;
+border:none;
+-webkit-transform:scale(0.5);
+transform:scale(0.5);
+-webkit-transform-origin:0 0;
+transform-origin:0 0;
+box-sizing:border-box;
+border-radius:0px;
+}
+button[disabled][type="default"], wx-button[disabled]:not([type]) {
+  color:rgba(0, 0, 0, 0.3);
+  background-color:#fff;
+}

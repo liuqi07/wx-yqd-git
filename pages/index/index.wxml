@@ -1,0 +1,61 @@
+<import src="condition/condition-tpl.wxml"/>
+<import src="invest/invest-tpl.wxml"/>
+
+<view class="container">
+    <!--banner-->
+    <swiper indicator-dots="true" autoplay="true" interval="5000">
+        <swiper-item bindtap="onIntrTap">
+            <image mode="aspectFit" src="/images/banner/banner01.png"></image>
+        </swiper-item>
+        <swiper-item>
+            <image src="/images/banner/banner02.jpg"></image>
+        </swiper-item>
+        <swiper-item>
+            <image src="/images/banner/banner03.jpg"></image>
+        </swiper-item>
+        <swiper-item>
+            <image src="/images/banner/banner04.jpg"></image>
+        </swiper-item>
+        <swiper-item>
+            <image src="/images/banner/banner05.jpg"></image>
+        </swiper-item>
+    </swiper>
+    <!--新手去领取-->
+    <view class="theNoviceExclusive">
+        <text>新用户注册即送668元红包</text>
+        <text>更有9.6%高息新手专项标</text>
+        <view class="toGet" bindtap="onGetTap"><text>去领取</text></view>
+    </view>
+    <!--新手上路-->
+    <view class="greenhand">
+        <view class="greenhand-l">
+            <text class="title">新手专享</text>
+            <text class="txt">最高可投资2万</text>
+        </view>
+        <view class="greenhand-r" catchtap="onDetailTap" data-procode="{{xinshouObj.ProCode}}" data-prosource="{{xinshouObj.ProSource}}" data-projectname="{{xinshouObj.ProjectName}}">
+            <view class="tip"><text>已抢购 </text><text>{{xinshouObj.InvestmentProportion}}</text></view>
+            <view class="yield"><text>{{xinshouObj.InterestRateOfYear}}</text>%</view>
+            <view class="greenhand-condition">
+                <template is="condition-tpl"  data="{{...xinshouObj.projectSubList}}"></template>
+            </view>
+        </view>
+    </view>
+    <!--精品推荐-->
+    <view class="recommendation">
+        <view class="recommendation-header">
+            <text class="title">精品推荐</text>
+            <view class="more">
+                <text>更多</text>
+                <text>》</text>
+            </view>
+        </view>
+        <view class="recommendation-content">
+            <!--<template is="invest-tpl"></template>-->
+            <block wx:for="{{investList}}">
+                <view catchtap="onDetailTap" data-procode="{{item.ProCode}}" data-prosource="{{item.ProSource}}" data-projectname="{{item.ProjectName}}">
+                    <template is="invest-tpl" data="{{...item}}"></template>
+                </view>
+            </block>
+        </view>
+    </view>
+</view>

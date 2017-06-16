@@ -1,0 +1,26 @@
+<import src="../condition/condition-tpl.wxml"/>
+<template name="invest-tpl">
+    <view class="invest-container">
+        <view class="invest-header">
+            <text>{{ ProjectName }}</text>
+            <view class="invest-header-per">
+                <text>已抢</text>
+                <text class="per"> {{ InvestmentProportion }}%</text>
+            </view>
+        </view>
+        <view class="invest-content">
+            <view class="invest-content-left">
+                <view class="annualized">
+                    <text>{{ InterestRateOfYear }}</text>%
+                </view>
+                <text class="text">预期年化收益率</text>
+            </view>
+            <view class="invest-content-right">
+                <text class="text">稳定收益首选</text>
+                <view class="condition">
+                    <template is="condition-tpl" data="{{...projectSubList}}"></template>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>

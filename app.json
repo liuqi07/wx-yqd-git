@@ -1,0 +1,42 @@
+{
+    "pages": [
+        "pages/index/invest-detail/invest-detail",
+        "pages/index/index",
+        "pages/mine/register/register",
+        "pages/animation/animation",
+        "pages/mine/mine",
+        "pages/calc/calc",
+        "pages/index/introduce/introduce"
+    ],
+    "window": {
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "云钱袋"
+    },
+    "tabBar": {
+        "color": "#bfbfbf",
+        "selectedColor": "#2267d4",
+        "backgroundColor": "#fafafa",
+        "borderStyle": "white",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "images/icons/home.png",
+                "selectedIconPath": "images/icons/home_sel.png"
+            },
+            {
+                "pagePath": "pages/calc/calc",
+                "text": "计算器",
+                "iconPath": "images/icons/calc.png",
+                "selectedIconPath": "images/icons/calc_sel.png"
+            },
+            {
+                "pagePath": "pages/mine/mine",
+                "text": "我的",
+                "iconPath": "images/icons/mine.png",
+                "selectedIconPath": "images/icons/mine_sel.png"
+            }
+        ]
+    }
+}
