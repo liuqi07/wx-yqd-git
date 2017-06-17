@@ -2,17 +2,20 @@
 page {
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
+swiper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+
 .container {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     background-color: #f5f5f5;
-    position: relative;
-    top: 0;
-    left: 0;
 }
 
 .intro {
@@ -223,7 +226,28 @@ page {
 .content {
     width: 100%;
     height: 100%;
-    background-color: #52a3e8;
-    position: relative;
-    left: 0;
+    background-color: #ccc;
+}
+.content .tab{
+    width: 100%;
+    height: 100rpx;
+    background: #bfc2ce;
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    justify-content: center;
+}
+.tab .tab-item {
+    width: 50%;
+    text-align: center;
+    line-height: 100rpx;
+}
+.tab .active {
+    border-bottom: 2px solid #ff6d24;
+    color: #ff6d24;
+}
+.content .sub-swiper{
+    display: flex;
+    text-align: center;
+    line-height: 700rpx;
 }

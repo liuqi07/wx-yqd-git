@@ -1,6 +1,6 @@
 // invest-detail.js
-
-var app = getApp();
+let util = require('../../../utils/util.js');
+let app = getApp();
 Page({
 
   /**
@@ -8,8 +8,7 @@ Page({
    */
   data: {
       navigateTitle: '', // 动态设置导航栏标题
-      animationData: {},
-      contentAnimationData: {}
+      currentPage: 0
   },
 
   // 输入框点击完成时
@@ -28,50 +27,56 @@ Page({
           console.log('error');
       }
   },
+  // 子swiper发生切换时
+  subSwiperChange (ev) {
+      console.log(ev); // ev.detail.current
+      this.setData({
+          currentPage: ev.detail.current
+      });
+  },
+
+  onChangeTap(ev) {
+    console.log(ev)
+    this.setData({
+        currentPage: ev.currentTarget.dataset.id,
+        flag: false // 存储用户第一次拒绝授权状态
+    });
+  },
 
   // 去投资
   onInvestTap (ev) {
+      var that = this;
       // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.userInfo" 这个 scope
       wx.getSetting({
           success(res) {
-              console.log(res)
               if (!res.authSetting['scope.userInfo']) {
+                  // 获取授权
                   wx.authorize({
                       scope: 'scope.userInfo',
                       success() {
                           // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
-                          wx.getUserInfo({
-                              success: function(res){
-                                  var userInfo = res.userInfo;
-                                  var info = {
-                                      nickName: userInfo.nickName,
-                                      avatarUrl: userInfo.avatarUrl,
-                                      gender: userInfo.gender, //性别 0：未知、1：男、2：女
-                                      province: userInfo.province,
-                                      city: userInfo.city,
-                                      country: userInfo.country
-                                  }
-                                  console.log(info);
-                              }
+                          util.getUserInfo();
+                          wx.setStorageSync('session', 1);
+                      },
+                      fail(res) {
+                          console.log('fail');
+                          // 第一次拒绝授权，不弹出手动授权提示框
+                          if(that.data.flag){
+                              util.authorizeConfirm();
+                          }
+                          that.setData({
+                              flag: true
                           });
-                      }
-                  });
-              } else if (res.authSetting['scope.userInfo']){
-                  wx.showModal({
-                      title: '温馨提示',
-                      content: '小程序暂不支持出借功能\n请下载APP或到云钱袋官网进行出借',
-                      showCancel: true,
-                      cancelText: '不去',
-                      confirmText: '去下载',
-                      confirmColor: '#3f99e6',
-                      success: function(res){
-                          if(res.confirm){
-                              console.log('用户点击了确认！');
-                          }else if(res.cancel){
-                              console.log('用户点击了取消！');
+                      },
+                      complete() {
+                          var session = wx.getStorageSync('session');
+                          if(session){
+                              that.showTips();
                           }
                       }
                   })
+              } else if (res.authSetting['scope.userInfo']){
+                  that.showTips();
               } else {
                   console.log(1);
                   wx.openSetting({
@@ -82,23 +87,29 @@ Page({
               }
           }
       });
-      // 获取用户信息
-    //   wx.getUserInfo({
-    //       success: function (res) {
-    //           var userInfo = res.userInfo;
-    //           var info = {
-    //               nickName: userInfo.nickName,
-    //               avatarUrl: userInfo.avatarUrl,
-    //               gender: userInfo.gender, //性别 0：未知、1：男、2：女
-    //               province: userInfo.province,
-    //               city: userInfo.city,
-    //               country: userInfo.country
-    //           }
-    //           console.log(info)
-    //       }
-    //   })
+      
+    
   },
 
+  // 提示下载
+  showTips() {
+      wx.showModal({
+          title: '温馨提示',
+          content: '小程序暂不支持出借功能\n请下载APP或到云钱袋官网进行出借',
+          showCancel: true,
+          cancelText: '不去',
+          confirmText: '去下载',
+          confirmColor: '#3f99e6',
+          success: function (res) {
+              if (res.confirm) {
+                  console.log('用户点击了确认！');
+              } else if (res.cancel) {
+                  console.log('用户点击了取消！');
+              }
+          }
+      })
+  },
+  
   onTouchStart(ev){
       console.log(ev);
       var pageY = ev.touches[0].pageY;

@@ -3,7 +3,7 @@
 
 <view class="container">
     <!--banner-->
-    <swiper indicator-dots="true" autoplay="true" interval="5000">
+    <swiper indicator-dots="true" autoplay="true" interval="5000" circular="true">
         <swiper-item bindtap="onIntrTap">
             <image mode="aspectFit" src="/images/banner/banner01.png"></image>
         </swiper-item>

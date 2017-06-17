@@ -7,6 +7,7 @@ Page({
     data: {
         // investList: [], 散标
         // xinshouObj: {} 新手标 
+        flag: false
     },
 
     // 品牌介绍
@@ -17,33 +18,22 @@ Page({
     },
     // 去领取页面
     onGetTap(ev) {
-
+        var that = this;
         var session = wx.getStorageSync('session');
         // 未注册
         if (!session) {
+            // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.userInfo" 这个 scope
             wx.getSetting({
                 success: function (res) {
                     console.log(res);
                     // 判断是否授权过用户信息
                     if (!res.authSetting['scope.userInfo']) {
+                        // 获取授权
                         wx.authorize({
                             scope: 'scope.userInfo',
                             success() {
                                 // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
-                                wx.getUserInfo({
-                                    success: function (res) {
-                                        var userInfo = res.userInfo;
-                                        var info = {
-                                            nickName: userInfo.nickName,
-                                            avatarUrl: userInfo.avatarUrl,
-                                            gender: userInfo.gender, //性别 0：未知、1：男、2：女
-                                            province: userInfo.province,
-                                            city: userInfo.city,
-                                            country: userInfo.country
-                                        }
-                                        console.log(info);
-                                    }
-                                });
+                                util.getUserInfo();
                                 // 授权成功后跳转注册页
                                 wx.navigateTo({
                                     url: '../mine/register/register'
@@ -51,36 +41,30 @@ Page({
                             },
                             fail(res) {
                                 console.log('fail');
-                                wx.showModal({
-                                    title: '确认授权？',
-                                    showCancel: true,
-                                    cancelText: '不',
-                                    confirmText: '好吧',
-                                    confirmColor: '#1371bc',
-                                    success(res) {
-                                        if (res.confirm) {
-                                            wx.openSetting({
-                                                success: (res) => {
-                                                    console.log(res)
-                                                }
-                                            });
-                                        } else if (res.cancel) {
-                                            console.log('取消授权');
-                                        }
-                                    }
-                                })
+                                if(that.data.flag){
+                                    util.authorizeConfirm();
+                                }
+                                that.setData({
+                                    flag: true
+                                });
                             }
                         })
                     } else {
                         wx.navigateTo({
-                            url: '../mine/register/register',
+                            url: '../mine/register/register'
                         })
                     }
                 }
             });
         }
-        //已授权，未注册
-        else if(session===1){
+        // 已授权，未注册
+        else if(session===1) {
+            wx.navigateTo({
+                url: '../mine/register/register'
+            })
+        }
+        //已授权，已注册
+        else if(session===2){
             wx.switchTab({
                 url: '../mine/mine'
             })
@@ -104,9 +88,9 @@ Page({
     onLoad: function (options) {
 
         var url = app.globalData.webUrl + 'wechatApplet/homepage1';
-        util.http(url, this.getData);
+        // util.http(url, this.getData);
 
-        // this.getMockData();
+        this.getMockData();
     },
 
     // 获取并整理数据
@@ -156,28 +140,28 @@ Page({
 
     getMockData() {
         // 本地数据
-        // var data = investData.investData;
-        // var sanbiaoList = data.sanbiaoList;
-        // var xinshouList = data.xinshouList;
-        // var tempSanbiaoList = [], tempXinshouObj = {};
-        // // 整理散标数据
-        // sanbiaoList.forEach(function (item, i) {
-        //     tempSanbiaoList[i] = {
-        //         ProjectName: item.ProjectName, // 标的名称
-        //         InvestmentProportion: item.InvestmentProportion, // 抢购百分比
-        //         InterestRateOfYear: item.InterestRateOfYear.toFixed(2), // 年化收益率  如果是月计划则为最小收益率
-        //         ProCode: item.ProCode, // 产品编号
-        //         ProSource: item.ProSource, // 标的来源
-        //         projectSubList: {
-        //             ProjectAmount: parseInt(item.ProjectAmount) + '万元', // 发标金额
-        //             ProjectPeriod: item.ProjectPeriod + '月', // 期限
-        //             MinimumInvestAmount: !isNaN(item.MinimumInvestAmount) ? item.MinimumInvestAmount + '起投' : item.MinimumInvestAmount // 起投金额
-        //         }
-        //     }
-        // });
-        // this.setData({
-        //     investList: tempSanbiaoList
-        // });
+        var data = investData.investData;
+        var sanbiaoList = data.sanbiaoList;
+        var xinshouList = data.xinshouList;
+        var tempSanbiaoList = [], tempXinshouObj = {};
+        // 整理散标数据
+        sanbiaoList.forEach(function (item, i) {
+            tempSanbiaoList[i] = {
+                ProjectName: item.ProjectName, // 标的名称
+                InvestmentProportion: item.InvestmentProportion, // 抢购百分比
+                InterestRateOfYear: item.InterestRateOfYear.toFixed(2), // 年化收益率  如果是月计划则为最小收益率
+                ProCode: item.ProCode, // 产品编号
+                ProSource: item.ProSource, // 标的来源
+                projectSubList: {
+                    ProjectAmount: parseInt(item.ProjectAmount) + '万元', // 发标金额
+                    ProjectPeriod: item.ProjectPeriod + '月', // 期限
+                    MinimumInvestAmount: !isNaN(item.MinimumInvestAmount) ? item.MinimumInvestAmount + '起投' : item.MinimumInvestAmount // 起投金额
+                }
+            }
+        });
+        this.setData({
+            investList: tempSanbiaoList
+        });
     },
 
     /**
