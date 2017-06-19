@@ -38,7 +38,7 @@
                   <image class="clear" src="/images/register/clear.png"></image>
               </view>
           </view>
-          <button disabled="{{codeFlag}}" class="weui-search-bar__cancel-btn"  bindtap="checkImgCode">{{codeFlag?count+"s重新获取":"获取验证码"}}</button>
+          <button disabled="{{codeFlag}}" class="weui-search-bar__cancel-btn"  bindtap="checkImgCode">{{codeFlag?(count+"s重新获取"):"获取验证码"}}</button>
       </view>
   </view>
 <!--邀请码-->

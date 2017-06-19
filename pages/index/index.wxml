@@ -21,10 +21,10 @@
         </swiper-item>
     </swiper>
     <!--新手去领取-->
-    <view class="theNoviceExclusive">
+    <view class="theNoviceExclusive" bindtap="onGetTap">
         <text>新用户注册即送668元红包</text>
         <text>更有9.6%高息新手专项标</text>
-        <view class="toGet" bindtap="onGetTap"><text>去领取</text></view>
+        <view class="toGet"><text>去领取</text></view>
     </view>
     <!--新手上路-->
     <view class="greenhand">

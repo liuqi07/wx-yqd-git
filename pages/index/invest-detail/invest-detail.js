@@ -76,9 +76,10 @@ Page({
                               if (that.data.flag) {
                                   // 弹窗提示用户手动开启授权
                                   function goRegisterPage() {
+                                      var userInfo = util.getUserInfo();
                                       wx.setStorageSync('session', 1);
                                       wx.navigateTo({
-                                          url: '../mine/register/register'
+                                          url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
                                       });
                                   }
                                   util.authorizeConfirm(goRegisterPage);
@@ -94,8 +95,9 @@ Page({
       }
       // 已授权，未注册 session===1
       else if(session===1) {
+          var userInfo = util.getUserInfo();
           wx.navigateTo({
-              url: '../../mine/register/register'
+              url: '../../mine/register/register?userInfo=' + JSON.stringify(userInfo)
           });
       }
       // 已授权，已注册 session===2
@@ -110,70 +112,8 @@ Page({
               url: '',
           })
       }
-
-
-
-      // 实现在上方代码
-    //   wx.getSetting({
-    //       success(res) {
-    //           console.log(res);
-    //           console.log(!res.authSetting['scope.userInfo']);
-    //           if (!res.authSetting['scope.userInfo']) {
-    //               // 获取授权
-    //               wx.authorize({
-    //                   scope: 'scope.userInfo',
-    //                   success() {
-    //                       // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
-    //                       var userInfo = util.getUserInfo();
-    //                       console.log('userInfo');
-    //                       console.log(userInfo);
-    //                       wx.setStorageSync('session', 1);
-    //                       wx.switchTab({
-    //                           url: '../mine/register/register?userInfo='+JSON.stringify(userInfo)
-    //                       })
-    //                   },
-    //                   fail(res) {
-    //                       console.log('fail');
-    //                       // 第一次拒绝授权，不弹出手动授权提示框
-    //                       if(that.data.flag){
-    //                           util.authorizeConfirm();
-    //                       }
-    //                       that.setData({
-    //                           flag: true
-    //                       });
-    //                   },
-    //                   complete() {
-    //                       if(session){
-    //                           that.showTips();
-    //                       }
-    //                   }
-    //               })
-    //           } 
-    //           // 已获取过权限
-    //           else if (res.authSetting['scope.userInfo']){
-    //               var userInfo = util.getUserInfo();
-    //               // 授权未注册
-    //               if(session===1){
-    //                   wx.navigateTo({
-    //                       url: '../../mine/register/register?userInfo=' + JSON.stringify(userInfo) // 注册成功以后跳转回详情页面
-    //                   })
-    //               }
-    //               // 授权已注册
-    //               else if(session===2){
-    //                   that.showTips();
-    //               }
-    //               // 已退出（授权已注册）
-    //               else if(session===3){
-    //                   wx.navigateTo({
-    //                       url: '',
-    //                   })
-    //               }
-    //           }
-    //       }
-    //   });
-      
-    
   },
+  
   // 输入框内容改变时触发
   onInputChange (ev) {
       console.log(ev);

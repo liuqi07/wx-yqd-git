@@ -9,18 +9,19 @@ Page({
      */
     data: {
         inputShowed: true,
-        phoneVal: "",
-        authCode: "",
-        verifyCode: "",
-        invitCode: "",
+        phoneVal: "", // 手机号
+        authCode: "", // 短信验证码
+        verifyCode: "", // 验证码
+        invitCode: "", // 邀请码
         imgCodeUrl: app.globalData.webUrl + "//imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true",
         imgCodeFlag: true,
         codeFlag: false,
         checkedFlag: true,
         count: 60
     },
+    // 更换验证码图片
     changeImg: function () {
-        let getTimestamp = new Date().getTime();
+        let getTimestamp = new Date().getTime(); // 给图片添加时间戳，防止缓存
         this.setData({
             imgCodeUrl: app.globalData.webUrl + "//imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&timestamp=" + getTimestamp
         });
@@ -53,7 +54,7 @@ Page({
 
     },
     checkResult(res) {
-        util.checkResultCode(res, this.getCode)
+        util.checkResultCode(res, this.getCode);
         // if (res.state==1){
         //   this.getCode();
         // }else{
@@ -75,14 +76,15 @@ Page({
         });
         var data = this.data.phoneVal;
         var url = app.globalData.webUrl + '/wechatApplet/sendMobileCode?phone=' + data;
+        var that = this;
         util.http(url, this.getCodeStyle);
-        var timerID = setInterval(() => {
-            let newCount = this.data.count - 1;
-            this.setData({
+        var timerID = setInterval(function() {
+            let newCount = that.data.count - 1;
+            that.setData({
                 count: newCount
             })
-            if (this.data.count <= 0) {
-                this.setData({
+            if (that.data.count <= 0) {
+                that.setData({
                     codeFlag: false,
                     count: 60,
                     imgCodeFlag: true

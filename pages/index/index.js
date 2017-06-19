@@ -42,9 +42,10 @@ Page({
                     if (that.data.flag) {
                         // 弹窗提示用户手动开启授权
                         function goRegisterPage () {
+                            var userInfo = util.getUserInfo();
                             wx.setStorageSync('session', 1);
                             wx.navigateTo({
-                                url: '../mine/register/register'
+                                url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
                             });
                         }
                         util.authorizeConfirm(goRegisterPage);
@@ -57,8 +58,9 @@ Page({
         }
         // 已授权，未注册
         else if(session===1) {
+            var userInfo = util.getUserInfo();
             wx.navigateTo({
-                url: '../mine/register/register'
+                url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
             });
         }
         // 已授权，已注册
