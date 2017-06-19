@@ -1,12 +1,14 @@
 {
     "pages": [
         "pages/index/index",
-        "pages/index/invest-detail/invest-detail",
         "pages/mine/mine",
         "pages/mine/register/register",
+        "pages/mine/authorize/authorize",
+        "pages/mine/reward/reward",
+        "pages/index/invest-detail/invest-detail",
         "pages/animation/animation",
-        "pages/calc/calc",
-        "pages/index/introduce/introduce"
+        "pages/index/introduce/introduce",
+        "pages/mine/experience/experience"
     ],
     "window": {
         "navigationBarBackgroundColor": "#fff",
@@ -24,12 +26,6 @@
                 "text": "首页",
                 "iconPath": "images/icons/home.png",
                 "selectedIconPath": "images/icons/home_sel.png"
-            },
-            {
-                "pagePath": "pages/calc/calc",
-                "text": "计算器",
-                "iconPath": "images/icons/calc.png",
-                "selectedIconPath": "images/icons/calc_sel.png"
             },
             {
                 "pagePath": "pages/mine/mine",

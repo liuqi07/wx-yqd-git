@@ -1,5 +1,5 @@
 <view class="container">
-    <swiper indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(219,211,211,0.7)" indicator-active-color="rgba(153,153,153,0.7)">
+    <swiper indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(210,210,210,1)" indicator-active-color="rgba(100,186,233,1)">
         <block wx:for="{{introduceList}}">
             <swiper-item>
                 <view class="page">

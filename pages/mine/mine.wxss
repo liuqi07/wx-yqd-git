@@ -190,21 +190,22 @@ page{
 }
 .loginAccount{
   text-align: center;
-  height: 400rpx;
+  height: 486rpx;
 }
 .logoImg{
-  width: 90rpx;
-  height: 90rpx;
-  margin: 50rpx 0rpx;
+  width: 302rpx;
+  height:144rpx;
+  margin-top: 143rpx;
+  margin-bottom: 73rpx;
 }
 .loginBtn{
-  width: 120rpx;
   height: 60rpx;
-  /*display: inline-block;*/
   border-radius: 10rpx;
   line-height: 60rpx;
   color: #fff;
-  font-size: 30rpx;
+  font-size: 28rpx;
+  display:inline-block;
+  border:1px solid #fff;
 }
 button{
   background: none;

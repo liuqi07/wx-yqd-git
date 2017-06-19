@@ -44,7 +44,7 @@
                 <view class="balance-header">
                     <view class="balance-header-l">
                         <text>预期收益：</text>
-                        <text class="orange">0.00</text>
+                        <text class="orange">{{ prospectiveEarnings}}</text>
                         <text> 元</text>
                     </view>
                     <view class="balance-header-r">
@@ -54,7 +54,7 @@
                     </view>
                 </view>
                 <view class="balance-input">
-                    <input class="ipt" type="number" bindconfirm="onDoneTap" placeholder="输入金额：100元起投，100元递增" placeholder-class="placeholder" cursor-spacing="50" confirm-type="done"/>
+                    <input class="ipt" type="number" bindconfirm="onDoneTap" bindinput="onInputChange" placeholder="输入金额：100元起投，100元递增" placeholder-class="placeholder" cursor-spacing="50" confirm-type="done"/>
                 </view>
             </view>
             <!--去投资-->

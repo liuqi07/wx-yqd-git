@@ -1,44 +1,45 @@
 /* introduce.wxss */
+
+page {
+    width: 100%;
+    height:100%;
+}
 .container {
     width: 100%;
-    height: 1200rpx;
+    height: 100%;
 }
 .container swiper {
     width: 100%;
     height: 100%;
+    background: #f5f5f5;
 }
 .container .page {
-    width: 710rpx;
-    height: 1080rpx;
-    margin: 30rpx auto;
-    /*background-color: #f6f6f6;*/
-    border: 1px solid #666;
-    border-radius: 20rpx;
+    width: 662rpx;
+    height: 981rpx;
+    margin: 40rpx auto;
+    background-color: #fff;
+    border-radius: 18rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*text-align: center;
-    line-height: 1080rpx;*/
 }
 .page .img {
     width: 128rpx;
     height: 128rpx;
-    margin: 20rpx 0;
+    margin-top: 40rpx;
 }
 
 .page .title {
-    font-size: 40rpx;
-    margin-bottom: 40rpx;
+    font-size: 32rpx;
+    margin: 40rpx 0;
+    color: #394675;
+    font-weight: 800;
 }
 .page .content {
     width: 86%;
-    font-size: 28rpx;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: #999;
-}
-.content .item {
-    margin-bottom: 30rpx;
+    font-size: 26rpx;
+    color: #394675;
 }
 .content .item text {
-    line-height: 44rpx;
+    line-height: 45rpx;
 }

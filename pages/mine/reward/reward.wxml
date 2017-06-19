@@ -9,8 +9,17 @@
   <view  hidden="{{!selected}}">
     <view class="tick">
       <view class="tickL">
-        <view class="lTop">fdsaf</view>
-        <view class="lBot">fdsaf</view>
+        <view class="lTop">
+          <view class="money">￥<text>8</text></view>
+          <view class="moneyRule">
+            <view class="redTick">
+              <image class="birth" src="/images/register/redTick.png"></image>
+            生日红包
+            </view>
+            <view>单笔满1600元可用</view>
+          </view>
+        </view>
+        <view class="lBot">限3个月（90天）车贷、云信贷、信用散标、云安心使用</view>
       </view>
       <view class="tickR">
         <image class="askIcon" src="/images/register/askIcon.png"></image>

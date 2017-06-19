@@ -2,7 +2,7 @@ var util = require('utils/util.js');
 App({
 
   globalData: {
-      webUrl: 'http://10.0.133.63:8080/',
+      webUrl: 'http://10.0.133.45:8080/',
       loginStatus_g: 1 // 登陆状态 1 登陆 0 未登陆
   },
 

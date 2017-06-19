@@ -11,7 +11,7 @@
       </view>
       <view class="accountBalance">
         <view class="balance">
-          <text class="accountMoney">{{balance}}</text>
+          <text class="accountMoney">{{totalMoney}}</text>
           <!--<image  class="iconInfo" src="/images/register/iphone.png"></image>-->
           <image bindtap="info" class="iconInfo" src="/images/register/info.png"></image>
         </view>   
@@ -20,15 +20,15 @@
       </view>
       <view class="accountDetial">
         <view class="accountList">
-          <text class="moneyCount">{{available}}</text>
+          <text class="moneyCount">{{moneyUseable}}</text>
           <text class="moneyDes">可用余额（元）</text>
         </view>
         <view class="accountList">
-          <text class="moneyCount">{{income}}</text>
+          <text class="moneyCount">{{allInterest}}</text>
           <text class="moneyDes">累计收益（元）</text>
         </view>
         <view class="accountList">
-          <text class="moneyCount">{{watting}}</text>
+          <text class="moneyCount">{{payamount}}</text>
           <text class="moneyDes">待还余额（元）</text>
         </view>
       </view>
@@ -53,8 +53,11 @@
     </view>
   </view>
   <view class="account loginAccount" hidden="{{!loginStatus}}">
-    <image class="logoImg" src="/images/register/logo@3x.png"></image>
-    <button bindtap="login" hover-class="none" class="loginBtn">登陆</button>
+    <image class="logoImg" src="/images/register/logo.png"></image>
+    <view>
+      <button bindtap="login" hover-class="none" class="loginBtn">登陆/注册</button>
+    </view>
+    
   </view>
 
 </view>

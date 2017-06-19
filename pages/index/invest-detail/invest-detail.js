@@ -8,12 +8,14 @@ Page({
    */
   data: {
       navigateTitle: '', // 动态设置导航栏标题
-      currentPage: 0
+      currentPage: 0,
+      flag: false, // 存储用户第一次拒绝授权状态
+      prospectiveEarnings: 0, // 预期收益
   },
 
   // 输入框点击完成时
-  onDoneTap (event) {
-
+  onDoneTap (ev) {
+      
   },
   // 获取屏幕高度
   getWindowHeight(ev) {
@@ -34,61 +36,153 @@ Page({
           currentPage: ev.detail.current
       });
   },
-
+  // 手动切换swpier
   onChangeTap(ev) {
     console.log(ev)
     this.setData({
-        currentPage: ev.currentTarget.dataset.id,
-        flag: false // 存储用户第一次拒绝授权状态
+        currentPage: ev.currentTarget.dataset.id
     });
   },
 
   // 去投资
   onInvestTap (ev) {
       var that = this;
+      var session = wx.getStorageSync('session');
       // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.userInfo" 这个 scope
-      wx.getSetting({
-          success(res) {
-              if (!res.authSetting['scope.userInfo']) {
-                  // 获取授权
-                  wx.authorize({
-                      scope: 'scope.userInfo',
-                      success() {
-                          // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
-                          util.getUserInfo();
-                          wx.setStorageSync('session', 1);
-                      },
-                      fail(res) {
-                          console.log('fail');
-                          // 第一次拒绝授权，不弹出手动授权提示框
-                          if(that.data.flag){
-                              util.authorizeConfirm();
+      console.log('session: '+session)
+      // 未授权未注册
+      if(!session){
+          // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.userInfo" 这个 scope
+          wx.getSetting({
+              success (res) {
+                  // 判断是否授权过用户信息（未授权过）
+                  if(!res.authSetting['scope.userInfo']){
+                      // 获取授权
+                      wx.authorize({
+                          scope: 'scope.userInfo',
+                          success () {
+                              // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
+                              var userInfo = util.getUserInfo();
+                              wx.setStorageSync('session', 1);
+                              // 授权成功后跳转注册页
+                              wx.navigateTo({
+                                  url: '../../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+                              });
+                          },
+                          fail () {
+                              // 用户点击拒绝授权会进入fail回调
+                              console.log('fail');
+                              // 首次拒绝不会执行此方法
+                              if (that.data.flag) {
+                                  // 弹窗提示用户手动开启授权
+                                  function goRegisterPage() {
+                                      wx.setStorageSync('session', 1);
+                                      wx.navigateTo({
+                                          url: '../mine/register/register'
+                                      });
+                                  }
+                                  util.authorizeConfirm(goRegisterPage);
+                              }
+                              that.setData({
+                                  flag: true
+                              });
                           }
-                          that.setData({
-                              flag: true
-                          });
-                      },
-                      complete() {
-                          var session = wx.getStorageSync('session');
-                          if(session){
-                              that.showTips();
-                          }
-                      }
-                  })
-              } else if (res.authSetting['scope.userInfo']){
-                  that.showTips();
-              } else {
-                  console.log(1);
-                  wx.openSetting({
-                      success: function(res){
-                          console.log(res)
-                      }
-                  })
+                      })
+                  }
               }
-          }
-      });
+          })
+      }
+      // 已授权，未注册 session===1
+      else if(session===1) {
+          wx.navigateTo({
+              url: '../../mine/register/register'
+          });
+      }
+      // 已授权，已注册 session===2
+      else if (session===2) {
+          // 弹出去下载提示框
+          that.showTips();
+      }
+      // 已退出（已授权、已注册）此时token还在 session===3
+      else if (session===3) {
+          // 跳转授权假页面
+          wx.navigateTo({
+              url: '',
+          })
+      }
+
+
+
+      // 实现在上方代码
+    //   wx.getSetting({
+    //       success(res) {
+    //           console.log(res);
+    //           console.log(!res.authSetting['scope.userInfo']);
+    //           if (!res.authSetting['scope.userInfo']) {
+    //               // 获取授权
+    //               wx.authorize({
+    //                   scope: 'scope.userInfo',
+    //                   success() {
+    //                       // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
+    //                       var userInfo = util.getUserInfo();
+    //                       console.log('userInfo');
+    //                       console.log(userInfo);
+    //                       wx.setStorageSync('session', 1);
+    //                       wx.switchTab({
+    //                           url: '../mine/register/register?userInfo='+JSON.stringify(userInfo)
+    //                       })
+    //                   },
+    //                   fail(res) {
+    //                       console.log('fail');
+    //                       // 第一次拒绝授权，不弹出手动授权提示框
+    //                       if(that.data.flag){
+    //                           util.authorizeConfirm();
+    //                       }
+    //                       that.setData({
+    //                           flag: true
+    //                       });
+    //                   },
+    //                   complete() {
+    //                       if(session){
+    //                           that.showTips();
+    //                       }
+    //                   }
+    //               })
+    //           } 
+    //           // 已获取过权限
+    //           else if (res.authSetting['scope.userInfo']){
+    //               var userInfo = util.getUserInfo();
+    //               // 授权未注册
+    //               if(session===1){
+    //                   wx.navigateTo({
+    //                       url: '../../mine/register/register?userInfo=' + JSON.stringify(userInfo) // 注册成功以后跳转回详情页面
+    //                   })
+    //               }
+    //               // 授权已注册
+    //               else if(session===2){
+    //                   that.showTips();
+    //               }
+    //               // 已退出（授权已注册）
+    //               else if(session===3){
+    //                   wx.navigateTo({
+    //                       url: '',
+    //                   })
+    //               }
+    //           }
+    //       }
+    //   });
       
     
+  },
+  // 输入框内容改变时触发
+  onInputChange (ev) {
+      console.log(ev);
+      var ProjectPeriodUnit = this.data.investList.ProjectPeriodUnit, //期限单位：年 or 月
+          ProjectPeriod = this.data.investList.ProjectPeriod, // 期限
+          InterestRateOfYear = this.data.investList.InterestRateOfYear; // 收益
+      this.setData({
+          prospectiveEarnings: (ev.detail.value * InterestRateOfYear) * ((ProjectPeriodUnit == '月') ? ProjectPeriodUnit / 12 : ProjectPeriodUnit / 1)
+      });
   },
 
   // 提示下载

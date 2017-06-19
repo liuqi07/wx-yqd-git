@@ -23,8 +23,54 @@ page{background-color:#edf0f3;}
   background: #fff;
 }
 .tickL{
-  background: red;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAADmBAMAAADbzcTPAAAAMFBMVEUAAADFJiq0Iya9JCi0IybFJirFJiq0Iya0IybFJiq0Iya0Iya0IybFJiq+HyPCJCelZ0l4AAAADHRSTlMA0dEeiYlUVPeH5ZdcTmImAAAC7UlEQVR42u3YsUlFURBF0VvCBzEwE7SAX5IlWIJgK1YiRmpiYPha0AoEZ04JPxoWdzrY7Dtzznvr54L5PabN6SKOv2PanBahozgIHdfnJej4elhL0PG91gJ0HFfFAeg4TsUB6AgHoCPvCtCRPQd05O4COo7j5rwAHdl0QUdzEDqKg9BRHISO4iB0VG8XdHR+CDo6zwEd6VeAjvRdQEc4AB15V4CO7DmgI3cX0JHeDujIpgs6moPQURyEjuIgdBQHoaN6u6Cj80PQ0XkO6Ei/AnSk7wI6wgHoyLsCdGTPAR25u4CO9HZARzZd0NEchI7iIHQUB6GjOAgd1dsFHZ0fgo7Oc0BH+hWgI30X0BEOQEfeFaAjew7oyN0FdKS3Azqy6YKO5iB0FAehozgIHcVB6KjeLujo/BB0dJ4DOtKvAB3pu4COcAA68q4AHdlzQEfuLqAjvR3QkU0XdDQHoaM4CB3FQegoDkJH9XZBR+eHoKPzHNCRfgXoSN8FdIQD0JF3BejIngM6cncBHentgI5suqCjOQgdxUHoKA5CR3EQOqq3Czo6PwQdneeAjvQrQEf6LqAjHICOvCtAR/Yc0JG7C+hIbwd0ZNMFHc1B6CiOg5jNMWquzwRH5QfB8b0MjiuE47Q5Ro3yrpQ9V+7ucWPkINNLiuOTmNvNMWoQjvszwfH6uAiOt2Vw3CEct5tj1CjvStlz5e4qOcj0ks0xbDbHqEHulZIfSp4r/UrpuwqH8q6UPVfurpKDTC/ZHMNmc4wa5F4p+aHkudKvlL6rcCjvStlz5e4qOcj0ks+nzTFqFA5kP16Me/WO5McHkufPCMcTwqH4UPZDuVdKfjB5zvQrhUN5VwgH8n2u/C9R/l8p/xOV/7sKh/KulD1X7q6Sg0wv2RzDZnOMGuReKfmh5LnSr5S+q3Ao70rZc+XuKjnI9JLNMWw2x6hB7pWSH0qeK/1K6bsKh/KulD1X7q6Sg0wv2RzDZnOMGuReKflRef4POG4qrd9HulUAAAAASUVORK5CYII=) no-repeat left top;
+  background-size: 100% 100%;
   flex-grow: 1;
+}
+.lTop{
+  height: 120rpx;
+  /*background: green;*/
+  display: flex;
+}
+.money{
+  width: 120rpx;
+  line-height: 120rpx;
+  font-size: 24rpx;
+  text-align: center;
+  color: #fff;
+}
+.money text{
+  font-size: 50rpx;
+  padding-left: 10rpx;
+}
+.moneyRule{
+  flex-flow: 1;
+  font-size: 26rpx;
+  color: #f9f6d7;
+}
+.redTick{
+  width:178rpx;
+  height:39rpx;
+  background:#980001;
+  border-radius: 10rpx;
+  line-height: 39rpx;
+  text-align: center;
+  margin-top: 29rpx;
+  margin-bottom: 12rpx;
+  color: #f4e7b2;
+
+}
+.birth{
+  width: 25rpx;
+  height: 25rpx;
+  padding-top: 3rpx;
+}
+.lBot{
+  font-size: 24rpx;
+  padding-left: 15rpx;
+  line-height: 38rpx;
+  padding-top: 20rpx;
+  color: #fff;
 }
 .tickR{
   width: 252rpx;
@@ -57,4 +103,5 @@ page{background-color:#edf0f3;}
   padding-top: 40rpx;
   font-size: 24rpx;
   text-align: center;
+  color: #717171;
 }

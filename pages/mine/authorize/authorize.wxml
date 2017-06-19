@@ -1,0 +1,11 @@
+<!--authorize.wxml-->
+<view class="account loginAccount">
+    <image class="logoImg" src="/images/register/logo.png"></image>
+
+    <view>
+      <button bindtap="refuse" hover-class="none" class="btn refuse">拒绝</button>
+      <button bindtap="allow" hover-class="none" class="btn allow">允许</button>
+    </view>
+
+    
+</view>

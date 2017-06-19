@@ -33,12 +33,27 @@ function formatNumber(n) {
     return n[1] ? n : '0' + n
 }  
 
+// 检查接口请求状态
+function checkResultCode(res, callback) {
+  if (res.data.state == 1) {
+    return typeof callback == "function" && callback(res)
+  }else {
+    wx.showModal({
+      title: res.data.errorInfo,
+      showCancel: false,
+      confirmColor: "#289fe1"
+    });
+  }
+}
+
+// 获取用户信息
 function getUserInfo(){
+    var info = {};
     // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
     wx.getUserInfo({
         success: function (res) {
             var userInfo = res.userInfo;
-            var info = {
+            info = {
                 nickName: userInfo.nickName,
                 avatarUrl: userInfo.avatarUrl,
                 gender: userInfo.gender, //性别 0：未知、1：男、2：女
@@ -47,13 +62,13 @@ function getUserInfo(){
                 country: userInfo.country
             }
             console.log(info);
-            wx.setStorageSync('session', 1); // 此时是授权未注册状态
         }
-    })
+    });
+    return info;
 }
 
 // 确认授权提示框
-function authorizeConfirm() {
+function authorizeConfirm(callback) {
     wx.showModal({
         title: '确认授权？',
         showCancel: true,
@@ -64,7 +79,8 @@ function authorizeConfirm() {
             if (res.confirm) {
                 wx.openSetting({
                     success: (res) => {
-                        console.log(res)
+                        console.log(res);
+                        callback && callback();
                     }
                 });
             } else if (res.cancel) {
@@ -75,5 +91,6 @@ function authorizeConfirm() {
 }
 
 module.exports = {
-    http, formatTime, authorizeConfirm, getUserInfo
+    http, formatTime, authorizeConfirm, getUserInfo, checkResultCode
 }
+

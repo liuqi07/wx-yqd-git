@@ -1,0 +1,30 @@
+/* authorize.wxss */
+.account{
+  color: #fff;
+  background: -webkit-linear-gradient(left , #0d6cb6 , #3f98e5 100%);
+  text-align: center;
+  height: 486rpx;
+}
+.logoImg{
+  width: 302rpx;
+  height:144rpx;
+  margin-top: 143rpx;
+  margin-bottom: 73rpx;
+}
+.btn{
+  /*width: 120rpx;*/
+  height: 60rpx;
+  /*display: inline-block;*/
+  border-radius: 10rpx;
+  line-height: 60rpx;
+  color: #fff;
+  font-size: 28rpx;
+  display: inline-block;
+  background: red;
+  margin-right: 40rpx;
+}
+
+
+button::after{
+  border: 0rpx;
+}

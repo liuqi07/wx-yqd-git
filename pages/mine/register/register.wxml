@@ -19,13 +19,14 @@
       <view class="weui-search-bar__form">
           <view class="weui-search-bar__box">
               <image class="icon imgIcon" src="/images/register/imgCode.png"></image>
-              <input type="text" data-name="imgCode" class="weui-search-bar__input" placeholder="请输入验证码" value="{{imgCode}}" bindinput="inputTyping"/>
-              <view class="weui-icon-clear" wx:if="{{imgCode.length > 0}}" bindtap="clearInput" data-del="imgCode">
+              <input type="text" data-name="verifyCode" class="weui-search-bar__input" placeholder="请输入验证码" value="{{verifyCode}}" bindinput="inputTyping"/>
+              <view class="weui-icon-clear" wx:if="{{verifyCode.length > 0}}" bindtap="clearInput" data-del="verifyCode">
                   <image  class="clear" src="/images/register/clear.png"></image>
               </view>
           </view>
+          <image bindtap="changeImg" class="imgCode" src="{{imgCodeUrl}}"></image>
       </view>
-      <image bindtap="changeImg" class="imgCode" src="{{imgCodeUrl}}"></image>
+      
   </view>
   <!--验证码-->
     <view class="weui-search-bar">

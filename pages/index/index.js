@@ -6,7 +6,7 @@ Page({
 
     data: {
         // investList: [], 散标
-        // xinshouObj: {} 新手标 
+        // xinshouObj: {} 新手标
         flag: false
     },
 
@@ -20,53 +20,58 @@ Page({
     onGetTap(ev) {
         var that = this;
         var session = wx.getStorageSync('session');
-        // 未注册
+        console.log('session'+session);
+        // 未授权未注册
         if (!session) {
-            // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.userInfo" 这个 scope
-            wx.getSetting({
-                success: function (res) {
-                    console.log(res);
-                    // 判断是否授权过用户信息
-                    if (!res.authSetting['scope.userInfo']) {
-                        // 获取授权
-                        wx.authorize({
-                            scope: 'scope.userInfo',
-                            success() {
-                                // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
-                                util.getUserInfo();
-                                // 授权成功后跳转注册页
-                                wx.navigateTo({
-                                    url: '../mine/register/register'
-                                })
-                            },
-                            fail(res) {
-                                console.log('fail');
-                                if(that.data.flag){
-                                    util.authorizeConfirm();
-                                }
-                                that.setData({
-                                    flag: true
-                                });
-                            }
-                        })
-                    } else {
-                        wx.navigateTo({
-                            url: '../mine/register/register'
-                        })
+            // 获取授权
+            wx.authorize({
+                scope: 'scope.userInfo',
+                success() {
+                    // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
+                    var userInfo = util.getUserInfo();
+                    wx.setStorageSync('session', 1);
+                    // 授权成功后跳转注册页
+                    wx.navigateTo({
+                        url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+                    })
+                },
+                fail(res) {
+                    // 用户点击拒绝授权会进入fail回调
+                    console.log('fail');
+                    // 首次拒绝不会执行此方法
+                    if (that.data.flag) {
+                        // 弹窗提示用户手动开启授权
+                        function goRegisterPage () {
+                            wx.setStorageSync('session', 1);
+                            wx.navigateTo({
+                                url: '../mine/register/register'
+                            });
+                        }
+                        util.authorizeConfirm(goRegisterPage);
                     }
+                    that.setData({
+                        flag: true
+                    });
                 }
-            });
+            })
         }
         // 已授权，未注册
         else if(session===1) {
             wx.navigateTo({
                 url: '../mine/register/register'
-            })
+            });
         }
-        //已授权，已注册
+        // 已授权，已注册
         else if(session===2){
             wx.switchTab({
                 url: '../mine/mine'
+            });
+        }
+        // 已退出（已授权、已注册）此时token还在
+        else if(session===3){
+            // 跳转授权假页面
+            wx.navigateTo({
+                url: '',
             })
         }
 
