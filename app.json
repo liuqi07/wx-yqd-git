@@ -1,14 +1,15 @@
 {
     "pages": [
         "pages/index/index",
+        "pages/index/invest-detail/invest-detail",
+        "pages/test/test",
         "pages/mine/mine",
         "pages/mine/register/register",
         "pages/mine/authorize/authorize",
         "pages/mine/reward/reward",
-        "pages/index/invest-detail/invest-detail",
-        "pages/animation/animation",
         "pages/index/introduce/introduce",
-        "pages/mine/experience/experience"
+        "pages/mine/experience/experience",
+        "pages/animation/animation"
     ],
     "window": {
         "navigationBarBackgroundColor": "#fff",
@@ -34,5 +35,8 @@
                 "selectedIconPath": "images/icons/mine_sel.png"
             }
         ]
+    },
+    "networkTimeout": {
+        "request": 120000
     }
 }

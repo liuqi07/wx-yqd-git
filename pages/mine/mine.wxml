@@ -1,3 +1,10 @@
+<import src="../common/dialog-tpl/dialog-tpl.wxml"/>
+
+<view class="dialog" wx:if="{{dialogFlag}}">
+    <template is="dialog-tpl"></template>
+</view>
+
+
 <view class="contain">
   <view hidden="{{loginStatus}}">
     <view  class="account">

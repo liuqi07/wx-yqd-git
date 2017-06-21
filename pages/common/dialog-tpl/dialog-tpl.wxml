@@ -1,0 +1,16 @@
+<template name="dialog-tpl">
+    <view class="dialog-shade">
+        <view class="dialog-container">
+            <view class="title">微信授权</view>
+            <image class="img" src="/images/icons/logo.png"></image>
+            <view class="content">
+                <text>云钱袋申请获得以下权限：</text>
+                <text>获得你的公开信息（昵称，头像等）</text>
+            </view>
+            <view class="button">
+                <text class="refuse" bindtap="onRefuseTap">拒绝</text>
+                <text class="allow" bindtap="onAllowTap">允许</text>
+            </view>
+        </view>
+    </view>
+</template>

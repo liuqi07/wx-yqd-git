@@ -1,13 +1,23 @@
 function http(url, callback, data, method) {
     data = data || {};
     method = method || 'GET';
+    var session_id = wx.getStorageSync('sessionId');//本地取存储的sessionID  
+    if (session_id != "" && session_id != null) {
+        var header = { 'content-type': 'application/x-www-form-urlencoded', 'Cookie': session_id }
+    } else {
+        var header = { 'content-type': 'application/x-www-form-urlencoded' }
+    }  
     wx.request({
         url: url,
         data: data,
         method: method,
-        header: { 'content-type': 'application/json' },
+        header: header,
         success: function (res) {
-            return typeof callback == "function" && callback(res)
+            console.log(res);
+            if (session_id == "" || session_id == null) {
+                wx.setStorageSync('sessionId', res.header['Set-Cookie']) //如果本地没有就说明第一次请求 把返回的session id 存入本地  
+            }  
+            return typeof callback == "function" && callback(res);
         },
         fail: function () {
             return typeof callback == "function" && callback(false)

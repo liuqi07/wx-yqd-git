@@ -1,0 +1,61 @@
+
+.dialog-shade {
+    width: 100%;
+    height: 100%;
+    background: rgba(127, 127, 127, .5);
+    float: left;
+    position: absolute;
+}
+.dialog-shade .dialog-container {
+    width: 560rpx;
+    height: 546rpx;
+    background: #fff;
+    margin: 330rpx auto;
+    display: flex;
+    flex-direction: column;
+}
+.dialog-container .title {
+    font-size: 34rpx;
+    line-height: 114rpx;
+    text-align: center;
+    margin-top: 18rpx;
+    color: #000;
+    font-weight: 900;
+}
+.dialog-container .img {
+    width: 171rpx;
+    height: 171rpx;
+    margin: 0 auto 24rpx;
+}
+.dialog-container .content {
+    color: #999;
+    font-size: 28rpx;
+    line-height: 46rpx;
+    display: flex;
+    flex-direction: column;
+    margin-left: 52rpx;
+    background: #fff;
+}
+.dialog-container .button {
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    line-height: 100rpx;
+    margin-top: 26rpx;
+    border-top: 1px solid #d2d3d5;
+}
+.button text {
+    width: 50%;
+    text-align: center;
+    font-weight: 900;
+    font-size: 32rpx;
+}
+.button .refuse {
+    border-right: 1px solid #d2d3d5;
+    color: #000;
+}
+.button .allow {
+    color: #3f99e6;
+}

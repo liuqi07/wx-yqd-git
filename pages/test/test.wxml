@@ -1,0 +1,2 @@
+<!--test.wxml-->
+<text bindtap="onTap">test.wxml</text>

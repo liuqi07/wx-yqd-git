@@ -13,7 +13,7 @@ Page({
         authCode: "", // 短信验证码
         verifyCode: "", // 验证码
         invitCode: "", // 邀请码
-        imgCodeUrl: app.globalData.webUrl + "//imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true",
+        imgCodeUrl: app.globalData.webUrl + "imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&isWechatApplet=true",
         imgCodeFlag: true,
         codeFlag: false,
         checkedFlag: true,
@@ -23,7 +23,7 @@ Page({
     changeImg: function () {
         let getTimestamp = new Date().getTime(); // 给图片添加时间戳，防止缓存
         this.setData({
-            imgCodeUrl: app.globalData.webUrl + "//imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&timestamp=" + getTimestamp
+            imgCodeUrl: app.globalData.webUrl + "imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&isWechatApplet=true&timestamp=" + getTimestamp
         });
     },
     //清空input输入
@@ -48,7 +48,7 @@ Page({
                 imgCodeFlag: false
             });
             let data = this.data.verifyCode;
-            let url = app.globalData.webUrl + '/wechatApplet/checkVerifyCode?verifyCode=' + data;
+            let url = app.globalData.webUrl + 'wechatApplet/checkVerifyCode?verifyCode=' + data;
             util.http(url, this.checkResult);
         }
 
@@ -75,7 +75,7 @@ Page({
             codeFlag: true
         });
         var data = this.data.phoneVal;
-        var url = app.globalData.webUrl + '/wechatApplet/sendMobileCode?phone=' + data;
+        var url = app.globalData.webUrl + 'wechatApplet/sendMobileCode?phone=' + data;
         var that = this;
         util.http(url, this.getCodeStyle);
         var timerID = setInterval(function() {
@@ -101,7 +101,7 @@ Page({
     getCodeStyle(res) {
         if (res.data.date != 1) {
             wx.showModal({
-                title: '系统异常',
+                title: res.data.errorInfo,
                 showCancel: false,
                 confirmColor: "#289fe1"
             });
@@ -110,6 +110,10 @@ Page({
     },
     // 登陆
     register() {
+        wx.showLoading({
+            title: '加载中...',
+            mask: true
+        })
         let dataObj = {
             phoneVal: this.data.phoneVal,
             authCode: this.data.authCode,
@@ -118,6 +122,7 @@ Page({
             checkedFlag: this.data.checkedFlag
         }
         if (!dataObj.phoneVal) {
+            wx.hideLoading();
             wx.showModal({
                 title: '手机号不能为空',
                 showCancel: false,
@@ -126,6 +131,7 @@ Page({
             return;
         }
         if (!dataObj.verifyCode) {
+            wx.hideLoading();
             wx.showModal({
                 title: '图形验证码不能为空',
                 showCancel: false,
@@ -134,6 +140,7 @@ Page({
             return;
         }
         if (!dataObj.authCode) {
+            wx.hideLoading();
             wx.showModal({
                 title: '短信验证码不能为空',
                 showCancel: false,
@@ -141,15 +148,8 @@ Page({
             });
             return;
         }
-        if (!dataObj.invitCode) {
-            wx.showModal({
-                title: '邀请码不能为空',
-                showCancel: false,
-                confirmColor: "#289fe1"
-            });
-            return;
-        }
         if (!dataObj.checkedFlag) {
+            wx.hideLoading();
             wx.showModal({
                 title: '请同意用户使用协议',
                 showCancel: false,
@@ -157,7 +157,34 @@ Page({
             });
             return;
         }
-        let url = app.globalData.webUrl + '/wechatApplet/register?mobile=' + dataObj.phoneVal + '&validateCode=' + dataObj.authCode + '&recommend=' + dataObj.invitCode + '&verifyCode=' + dataObj.verifyCode;
-        util.http(url, this.checkResult);
+        let url = app.globalData.webUrl + 'wechatApplet/register?mobile=' + dataObj.phoneVal + '&validateCode=' + dataObj.authCode + '&recommend=' + dataObj.invitCode + '&verifyCode=' + dataObj.verifyCode;
+        util.http(url, this.login);
+    },
+    login (res) {
+        console.log('login ');
+        console.log(res);
+        if(res.data.state==1){
+            var url = '';
+            // 通过后台返回状态判断用户是否是新客户，新客户跳转优惠券页面，不是新用户直接跳转mine页面
+            // doSomething();
+
+            wx.hideLoading();
+            wx.showToast({
+                title: '注册成功',
+                success (res) {
+                    wx.switchTab({
+                        url: '../mine',
+                    })
+                }
+            })
+            wx.setStorageSync('session', 2);
+        }else {
+            wx.showLoading({
+                title: res.data.errorInfo
+            })
+            setTimeout(function(){
+                wx.hideLoading();
+            },1500);
+        }
     }
 })

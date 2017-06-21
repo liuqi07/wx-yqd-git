@@ -2,11 +2,11 @@ var app = getApp();
 var util = require('../../utils/util');
 Page({
     data: {
-        totalMoney: 1800.00,
+        totalMoney: 1,
 
-        moneyUseable: 198.90,
-        allInterest: 120.89,
-        payamount: 100.90,
+        moneyUseable: 2,
+        allInterest: 3,
+        payamount: 4,
 
         loginFlag: true,
         inputShowed: true,
@@ -19,26 +19,75 @@ Page({
         duration: 800,
         codeFlag: true,
         count: 60,
-        loginStatus: app.globalData.loginStatus_g
+        dialogFlag: false // 假的授权弹窗状态
     },
     onLoad: function (options) {
         var session = wx.getStorageSync('session');
         // 如果是登陆状态，请求接口加载登陆页用户个人数据
         if(session===2) {
             this.setData({
-                loginFlag: false
+                loginFlag: false,
+                loginStatus: false
             });
             var url = app.globalData.webUrl + 'wechatApplet/person';
             util.http(url, this.getData);
+        }else {
+            this.setData({
+                loginStatus: true
+            });
         }
     },
+    // 弹框点击拒绝授权
+    onRefuseTap() {
+        this.setData({
+            dialogFlag: false
+        });
+    },
+
+    // 弹框点击允许授权
+    onAllowTap(ev) {
+        var session = wx.getStorageSync('session');
+        if(!session) {
+            wx.openSetting({
+                success: (res) => {
+                    // console.log(res);
+                    this.setData({
+                        dialogFlag: false
+                    });
+                    var userInfo = util.getUserInfo();
+                    console.log(userInfo);
+                    if (userInfo.nickName) {
+                        wx.setStorageSync('session', 1);
+                        wx.navigateTo({
+                            url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+                        });
+                    }
+                },
+                fail: (res) => {
+                    console.log('openSetting fail');
+                }
+            });
+        }
+        // 退出状态
+        else{
+            wx.setStorageSync('session', 2);
+            this.setData({
+                loginStatus: false,
+                dialogFlag: false
+            });
+            wx.switchTab({
+                url: '../mine/mine',
+            })
+        }
+    },
+    // 登陆后获取用户个人相关数据
     getData(res) {
         if (res.data.state == 1) {
             this.setData({
-                totalMoney: res.data.date.totalMoney,
-                moneyUseable: res.data.date.moneyUseable,
-                allInterest: res.data.date.allInterest,
-                payamount: res.data.date.payamount
+                totalMoney: res.data.data.totalMoney,
+                moneyUseable: res.data.data.moneyUseable,
+                allInterest: res.data.data.allInterest,
+                payamount: res.data.data.payamount
             })
         } else {
             wx.showModal({
@@ -53,7 +102,6 @@ Page({
     login(ev) {
         var that = this;
         var session = wx.getStorageSync('session');
-        console.log('session' + session);
         // 未授权未注册
         if (!session) {
             // 获取授权
@@ -70,22 +118,15 @@ Page({
                 },
                 fail(res) {
                     // 用户点击拒绝授权会进入fail回调
-                    console.log('fail');
+                    console.log('拒绝授权');
                     // 首次拒绝不会执行此方法
-                    if (that.data.flag) {
+                    if (app.globalData.firstFlag_g) {
                         // 弹窗提示用户手动开启授权
-                        function goRegisterPage() {
-                            var userInfo = util.getUserInfo();
-                            wx.setStorageSync('session', 1);
-                            wx.navigateTo({
-                                url: '../mine/register/register?userInfo='+JSON.stringify(userInfo)
-                            });
-                        }
-                        util.authorizeConfirm(goRegisterPage);
+                        that.setData({
+                            dialogFlag: true
+                        });
                     }
-                    that.setData({
-                        flag: true
-                    });
+                    app.globalData.firstFlag_g = true;
                 }
             })
         }
@@ -105,9 +146,9 @@ Page({
         // 已退出（已授权、已注册）此时token还在
         else if (session === 3) {
             // 跳转授权假页面
-            wx.navigateTo({
-                url: '',
-            })
+            that.setData({
+                dialogFlag: true
+            });
         }
     },
     loginOut() {

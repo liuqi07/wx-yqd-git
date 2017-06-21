@@ -1,5 +1,9 @@
+<import src="../../common/dialog-tpl/dialog-tpl.wxml" />
 
-<swiper vertical="true">
+<view class="dialog" wx:if="{{dialogFlag}}">
+    <template is="dialog-tpl"></template>
+</view>
+<swiper vertical="true" bindchange="swiperChange">
     <swiper-item>
         <view class="container">
             <!--简介-->
@@ -72,17 +76,162 @@
     </swiper-item>
 
     <swiper-item>
-        <view class="content">
+        <view class="content" wx:if="{{subSwiperFlag}}">
             <view class="tab">
-                <view class="tab-item{{currentPage==0?' active':''}}" bindtap="onChangeTap" data-id="0">项目信息</view>
-                <view class="tab-item{{currentPage==1?' active':''}}" bindtap="onChangeTap" data-id="1">参与人数</view>
+                <view class="tab-item{{currentPage==0?' active':''}}" bindtap="onChangeTap" data-id="0">项目介绍</view>
+                <view class="tab-item{{currentPage==1?' active':''}}" bindtap="onChangeTap" data-id="1">项目列表</view>
+                <view class="tab-item{{currentPage==2?' active':''}}" bindtap="onChangeTap" data-id="2">出借记录</view>
             </view>
             <swiper class="sub-swiper" bindchange="subSwiperChange" current="{{currentPage}}">
-                <swiper-item class="item1">
-                    第一页
+                <swiper-item>
+                    <!--<view class="projectInfo">
+                        <view class="prj-header">
+                            <text>项目简介</text>
+                            <image src="" style="width:50rpx;height:50rpx;"></image>
+                        </view>
+                        <view class="prj-content">
+                            <view class="content-item">
+                                <text class="item-l">产品名称</text>
+                                <text class="item-r">20170601042期</text>
+                            </view>
+                        </view>
+                    </view>-->
+                    <view class="proInfo">
+                        <view class="row">
+                            <text>产品名称：</text>
+                            <text>云安鑫-Y2017051912001</text>
+                        </view>
+                        <view class="row">
+                            <text>项目描述：</text>
+                            <text>云钱袋平台通过指定工具进行固定期限投资；云钱袋平台通过指定工具进行固定期限投资；云钱袋平台通过指定工具进行固定期限投资；云钱袋平台通过指定工具进行固定期限投资；云钱袋平台通过指定工具进行固定期限投资；云钱袋平台通过指定工具进行固定期限投资；</text>
+                        </view>
+                        <view class="row">
+                            <text>加入条件：</text>
+                            <text>100元起投，100元递增</text>
+                        </view>
+                        <view class="row">
+                            <text>加入上限：</text>
+                            <text>0</text>
+                        </view>
+                        <view class="row">
+                            <text>起息日：</text>
+                            <text>T（出借日）+1起息，T为出借人每笔投资加入时间，T为自然日</text>
+                        </view>
+                        <view class="row">
+                            <text>锁定期：</text>
+                            <text>360天</text>
+                        </view>
+                        <view class="row">
+                            <text>费率说明：</text>
+                            <text>购买费用：0，赎回费用：2</text>
+                        </view>
+                        <view class="row">
+                            <text>保障方式</text>
+                            <text>账户安全保障：保险公司账户安全保障</text>
+                        </view>
+                        <view class="row">
+                            <text>其他：</text>
+                            <text>《产品协议》</text>
+                        </view>
+                    </view>
                 </swiper-item>
                 <swiper-item>
-                    第二页
+                    <view class="proList">
+                        <view class="list-header">
+                            <view><text>项目名称</text></view>
+                            <view><text>借款期限</text></view>
+                            <view><text>金额</text></view>
+                            <view><text>状态</text></view>
+                        </view>
+                        <view class="list-content">
+                            <view><text>云安鑫-Y2017051912001</text></view>
+                            <view><text>24个月</text></view>
+                            <view><text>86681.93</text></view>
+                            <view><text>已满额</text></view>
+                        </view>
+                        <view class="list-content">
+                            <view><text>云安鑫-Y2017051912001</text></view>
+                            <view><text>24个月</text></view>
+                            <view><text>86681.93</text></view>
+                            <view><text>已满额</text></view>
+                        </view>
+                        <view class="list-content">
+                            <view><text>云安鑫-Y2017051912001</text></view>
+                            <view><text>24个月</text></view>
+                            <view><text>86681.93</text></view>
+                            <view><text>已满额</text></view>
+                        </view>
+                    </view>
+                </swiper-item>
+                <swiper-item>
+                    <view class="proRecord">
+                        <view class="record-header">
+                            <view><text>出借人</text></view>
+                            <view><text>出借金额(元)</text></view>
+                            <view><text>出借时间</text></view>
+                        </view>
+                        <view class="record-content">
+                            <view><text>a1*******87</text></view>
+                            <view><text>138123.09</text></view>
+                            <view><text>2017-04-26 14:21:29</text></view>
+                        </view>
+                        <view class="record-content">
+                            <view><text>a1*******87</text></view>
+                            <view><text>138123.09</text></view>
+                            <view><text>2017-04-26 14:21:29</text></view>
+                        </view>
+                        <view class="record-content">
+                            <view><text>a1*******87</text></view>
+                            <view><text>138123.09</text></view>
+                            <view><text>2017-04-26 14:21:29</text></view>
+                        </view>
+                        <!-- 饼状图 待定-->
+                        <!--<view class="record-top">
+                            <view class="top">
+                                <view class="left-canvas"></view>
+                                <view class="lengend">
+                                    <view>
+                                        <view></view>
+                                        <view>已出借<text>79.56%</text></view>
+                                    </view>
+                                    <view>
+                                        <view></view>
+                                        <view>未出借<text>20.44%</text></view>
+                                    </view>
+                                    <view>收益方式：<text>一次还本付息</text></view>
+                                </view>
+                            </view>
+                            <view class="bottom">已出借<text>35800</text>元</view>
+                        </view>-->
+                        <!--<view class="record-content">
+                            <view class="record-content-header">
+                                <view><text>项目名称</text></view>
+                                <view><text>借款期限</text></view>
+                                <view><text>金额</text></view>
+                                <view><text>状态</text></view>
+                            </view>
+                            <view class="record-content-content">
+                                <view><text>云安鑫-Y2017051912001</text></view>
+                                <view><text>24个月</text></view>
+                                <view><text>86681.93</text></view>
+                                <view><text>已满额</text></view>
+                            </view>
+                        </view>-->
+                    </view>
+                </swiper-item>
+            </swiper>
+        </view>
+        <view class="content" wx:if="{{!subSwiperFlag}}">
+            <view class="tab">
+                <view class="tab-item{{currentPage==0?' active':''}}" bindtap="onChangeTap" data-id="0">项目介绍</view>
+                <view class="tab-item{{currentPage==1?' active':''}}" bindtap="onChangeTap" data-id="1">项目列表</view>
+            </view>
+            <swiper class="sub-swiper" bindchange="subSwiperChange" current="{{currentPage}}">
+                <swiper-item>
+                    2.第一頁
+                </swiper-item>
+                <swiper-item>
+                    2.第二頁
                 </swiper-item>
             </swiper>
         </view>

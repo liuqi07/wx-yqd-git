@@ -1,5 +1,12 @@
 <import src="condition/condition-tpl.wxml"/>
 <import src="invest/invest-tpl.wxml"/>
+<import src="../common/dialog-tpl/dialog-tpl.wxml"/>
+
+<view class="dialog" wx:if="{{dialogFlag}}">
+    <template is="dialog-tpl"></template>
+</view>
+
+
 
 <view class="container">
     <!--banner-->
@@ -27,12 +34,12 @@
         <view class="toGet"><text>去领取</text></view>
     </view>
     <!--新手上路-->
-    <view class="greenhand">
+    <view class="greenhand" catchtap="onDetailTap" data-procode="{{xinshouObj.ProCode}}" data-prosource="{{xinshouObj.ProSource}}" data-projectname="{{xinshouObj.ProjectName}}">
         <view class="greenhand-l">
             <text class="title">新手专享</text>
             <text class="txt">最高可投资2万</text>
         </view>
-        <view class="greenhand-r" catchtap="onDetailTap" data-procode="{{xinshouObj.ProCode}}" data-prosource="{{xinshouObj.ProSource}}" data-projectname="{{xinshouObj.ProjectName}}">
+        <view class="greenhand-r">
             <view class="tip"><text>已抢购 </text><text>{{xinshouObj.InvestmentProportion}}</text></view>
             <view class="yield"><text>{{xinshouObj.InterestRateOfYear}}</text>%</view>
             <view class="greenhand-condition">

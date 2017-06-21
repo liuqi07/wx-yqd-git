@@ -7,7 +7,7 @@ Page({
     data: {
         // investList: [], 散标
         // xinshouObj: {} 新手标
-        flag: false
+        dialogFlag: false
     },
 
     // 品牌介绍
@@ -20,7 +20,6 @@ Page({
     onGetTap(ev) {
         var that = this;
         var session = wx.getStorageSync('session');
-        console.log('session'+session);
         // 未授权未注册
         if (!session) {
             // 获取授权
@@ -37,22 +36,15 @@ Page({
                 },
                 fail(res) {
                     // 用户点击拒绝授权会进入fail回调
-                    console.log('fail');
+                    console.log('拒绝授权');
                     // 首次拒绝不会执行此方法
-                    if (that.data.flag) {
+                    if (app.globalData.firstFlag_g) {
                         // 弹窗提示用户手动开启授权
-                        function goRegisterPage () {
-                            var userInfo = util.getUserInfo();
-                            wx.setStorageSync('session', 1);
-                            wx.navigateTo({
-                                url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
-                            });
-                        }
-                        util.authorizeConfirm(goRegisterPage);
+                        that.setData({
+                            dialogFlag: true
+                        });
                     }
-                    that.setData({
-                        flag: true
-                    });
+                    app.globalData.firstFlag_g = true;
                 }
             })
         }
@@ -72,11 +64,61 @@ Page({
         // 已退出（已授权、已注册）此时token还在
         else if(session===3){
             // 跳转授权假页面
-            wx.navigateTo({
-                url: '',
-            })
+            this.setData({
+                dialogFlag: true
+            });
         }
 
+    },
+
+    // 弹窗提示用户手动开启授权
+    goRegisterPage () {
+        var userInfo = util.getUserInfo();
+        wx.setStorageSync('session', 1);
+        wx.navigateTo({
+            url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+        });
+    },
+    // 弹框点击拒绝授权
+    onRefuseTap() {
+        this.setData({
+            dialogFlag: false
+        });
+    },
+
+    // 弹框点击允许授权
+    onAllowTap(ev) {
+        wx.openSetting({
+            success: (res) => {
+                // console.log(res);
+                this.setData({
+                    dialogFlag: false
+                });
+                var userInfo = util.getUserInfo();
+                console.log(userInfo);
+                if (userInfo.nickName) {
+                    wx.setStorageSync('session', 1);
+                    wx.navigateTo({
+                        url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+                    });
+                }
+            },
+            fail: (res) => {
+                console.log('openSetting fail');
+            }
+        });
+       
+        // var session = wx.getStorageSync('session');
+        // // 未授权
+        // if(!session){
+            
+        // }
+        // // 退出状态
+        // if(session===3){
+        //     wx.switchTab({
+        //         url: '../mine/mine',
+        //     })
+        // }
     },
 
     // 跳转详情页
@@ -95,17 +137,17 @@ Page({
     onLoad: function (options) {
 
         var url = app.globalData.webUrl + 'wechatApplet/homepage1';
-        // util.http(url, this.getData);
+        util.http(url, this.getData);
 
-        this.getMockData();
+        // this.getMockData();
     },
 
     // 获取并整理数据
     getData(res) {
-        console.log(res)
-        if (res.data.returnCode == 200 && res.data.sanbiaoList) {
-            var sanbiaoList = res.data.sanbiaoList ? res.data.sanbiaoList : [];
-            var xinshouList = res.data.xinshouList;
+        // console.log(res)
+        if (res.data.state == 1 && res.data.data.sanbiaoList) {
+            var sanbiaoList = res.data.data.sanbiaoList ? res.data.data.sanbiaoList : [];
+            var xinshouList = res.data.data.xinshouList;
             var tempSanbiaoList = [], tempXinshouObj = {};
             // 整理散标数据
             sanbiaoList.forEach(function (item, i) {
@@ -122,7 +164,7 @@ Page({
                     }
                 }
             });
-            console.log(tempSanbiaoList)
+            // console.log(tempSanbiaoList)
             // 整理新手标数据
             tempXinshouObj = {
                 ProjectName: xinshouList[0].ProjectName, // 标的名称
