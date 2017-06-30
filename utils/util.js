@@ -43,19 +43,6 @@ function formatNumber(n) {
     return n[1] ? n : '0' + n
 }  
 
-// 检查接口请求状态
-function checkResultCode(res, callback) {
-  if (res.data.state == 1) {
-    return typeof callback == "function" && callback(res)
-  }else {
-    wx.showModal({
-      title: res.data.errorInfo,
-      showCancel: false,
-      confirmColor: "#289fe1"
-    });
-  }
-}
-
 // 获取用户信息
 function getUserInfo(){
     var info = {};
@@ -100,7 +87,12 @@ function authorizeConfirm(callback) {
     });
 }
 
+// 获取随机数
+function getRandomNum (){
+    return (new Date().getTime()) + '' + Math.floor(Math.random()*1000000);
+}
+
 module.exports = {
-    http, formatTime, authorizeConfirm, getUserInfo, checkResultCode
+    http, formatTime, authorizeConfirm, getUserInfo, getRandomNum
 }
 

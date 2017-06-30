@@ -1,7 +1,6 @@
 // register.js
 var app = getApp();
 var util = require('../../../utils/util');
-
 Page({
 
     /**
@@ -9,21 +8,44 @@ Page({
      */
     data: {
         inputShowed: true,
+        clearShow:{
+          phoneVal: false,
+          authCode: false,
+          verifyCode: false,
+          invitCode:false
+        },
         phoneVal: "", // 手机号
         authCode: "", // 短信验证码
         verifyCode: "", // 验证码
         invitCode: "", // 邀请码
-        imgCodeUrl: app.globalData.webUrl + "imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&isWechatApplet=true",
+        imgCodeUrl: "",
         imgCodeFlag: true,
         codeFlag: false,
         checkedFlag: true,
-        count: 60
+        count: 60,
+        index:"",
+        timesTamp:"",
+        buddingFlag:true//登陆按钮
+    },
+    onShow:function(){
+
+    },
+    onLoad: function (options) {
+        var index = options.index;
+        let getTimestamp = (new Date().getTime())+Math.random()*10000; // 给图片添加时间戳，防止缓存
+            this.setData({
+                index:index,
+                timesTamp: getTimestamp,
+                imgCodeUrl: app.globalData.webUrl + "imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&isWechatApplet=" + getTimestamp
+            });
+        
     },
     // 更换验证码图片
     changeImg: function () {
-        let getTimestamp = new Date().getTime(); // 给图片添加时间戳，防止缓存
+        let getTimestamp = (new Date().getTime()) + Math.random() * 10000; // 给图片添加时间戳，防止缓存
         this.setData({
-            imgCodeUrl: app.globalData.webUrl + "imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&isWechatApplet=true&timestamp=" + getTimestamp
+            timesTamp: getTimestamp,
+            imgCodeUrl: app.globalData.webUrl + "imageCode/getImgCode?boder=false&widths=92&heights=40&fontSize=20&color=true&line=true&isWechatApplet=" + getTimestamp
         });
     },
     //清空input输入
@@ -41,6 +63,32 @@ Page({
             [name]: value
         });
     },
+    inputFocus(ev){
+      // 控制clear图标显示
+      const clear = ev.currentTarget.dataset.name;
+      let clearShow = {
+        phoneVal: false,
+        authCode: false,
+        verifyCode: false,
+        invitCode: false
+      };
+      clearShow[clear]=true
+      this.setData({
+        clearShow: clearShow
+      });
+    },
+    inputBlur(ev){
+      // 控制clear图标显示
+      let clearShow = {
+        phoneVal: false,
+        authCode: false,
+        verifyCode: false,
+        invitCode: false
+      }
+      this.setData({
+        clearShow: clearShow
+      });
+    }, 
     // 验证图形验证码
     checkImgCode() {
         if (this.data.imgCodeFlag) {
@@ -48,26 +96,26 @@ Page({
                 imgCodeFlag: false
             });
             let data = this.data.verifyCode;
-            let url = app.globalData.webUrl + 'wechatApplet/checkVerifyCode?verifyCode=' + data;
+            let url = app.globalData.webUrl + 'wechatApplet/checkVerifyCode?verifyCode=' + data + "&verifyCodeKey=" + this.data.timesTamp;
             util.http(url, this.checkResult);
         }
 
     },
     checkResult(res) {
-        util.checkResultCode(res, this.getCode);
-        // if (res.state==1){
-        //   this.getCode();
-        // }else{
-        //   wx.showModal({
-        //     title: '图形验证码输入错误',
-        //     showCancel: false,
-        //     confirmColor: "#289fe1"
-        //   });
-        //   this.setData({
-        //     imgCodeFlag: true
-        //   });
-        //   return;
-        // }
+        // util.checkResultCode(res, this.getCode);
+        if (res.data.state==1){
+          this.getCode();
+        }else{
+          wx.showModal({
+            title: res.data.errorInfo,
+            showCancel: false,
+            confirmColor: "#289fe1"
+          });
+          this.setData({
+            imgCodeFlag: true
+          });
+          return;
+        }
     },
     // 获取短信验证码
     getCode() {
@@ -99,17 +147,45 @@ Page({
         })
     },
     getCodeStyle(res) {
-        if (res.data.date != 1) {
+        if (res.data.state != 1) {
             wx.showModal({
                 title: res.data.errorInfo,
                 showCancel: false,
                 confirmColor: "#289fe1"
             });
             return;
+        }else{
+            wx.showToast({
+                title: '验证码发送成功',
+                success(res) {
+                }
+            });
+            this.setData({
+                buddingFlag:false
+            })
         }
     },
     // 登陆
     register() {
+        // 没有发短信验证码时不可用
+        if (this.data.buddingFlag){
+            return;
+        }
+        let encryptedData = '',
+            iv = '',
+            openId = wx.getStorageSync('openId');
+        wx.login({
+            success (res) {
+                if(res.code){
+                    wx.getUserInfo({
+                        success (res){
+                            encryptedData = res.encryptedData;
+                            iv = res.iv;
+                        }
+                    })
+                }
+            }
+        })
         wx.showLoading({
             title: '加载中...',
             mask: true
@@ -119,7 +195,10 @@ Page({
             authCode: this.data.authCode,
             verifyCode: this.data.verifyCode,
             invitCode: this.data.invitCode,
-            checkedFlag: this.data.checkedFlag
+            checkedFlag: this.data.checkedFlag,
+            encryptedData: encryptedData,
+            iv: iv,
+            rd_session: openId
         }
         if (!dataObj.phoneVal) {
             wx.hideLoading();
@@ -157,28 +236,42 @@ Page({
             });
             return;
         }
-        let url = app.globalData.webUrl + 'wechatApplet/register?mobile=' + dataObj.phoneVal + '&validateCode=' + dataObj.authCode + '&recommend=' + dataObj.invitCode + '&verifyCode=' + dataObj.verifyCode;
+        let url = app.globalData.webUrl + 'wechatApplet/register?mobile=' + dataObj.phoneVal + '&validateCode=' + dataObj.authCode + '&recommend=' + dataObj.invitCode + '&verifyCode=' + dataObj.verifyCode + '&rd_session=' + openId;
         util.http(url, this.login);
     },
     login (res) {
-        console.log('login ');
-        console.log(res);
-        if(res.data.state==1){
-            var url = '';
-            // 通过后台返回状态判断用户是否是新客户，新客户跳转优惠券页面，不是新用户直接跳转mine页面
-            // doSomething();
+        this.setData({
+            buddingFlag: true
+        })
+        // console.log('login ');
+        // console.log(res);
+        var that = this;
+        if (res.data.state == 1 || res.data.state == 200){
+            that.setData({
+                buddingFlag: false
+            });
 
+            wx.setStorageSync('token', res.data.token);
             wx.hideLoading();
             wx.showToast({
-                title: '注册成功',
+                title: '绑定成功',
                 success (res) {
-                    wx.switchTab({
-                        url: '../mine',
-                    })
+                    wx.setStorageSync('session', 2);
+                    if (that.data.index){
+                        wx.switchTab({
+                            url: '../../index/index'
+                        })
+                    }else{
+                        wx.switchTab({
+                            url: '../mine'
+                        })
+                    }
                 }
             })
-            wx.setStorageSync('session', 2);
         }else {
+            that.setData({
+                buddingFlag: false
+            });
             wx.showLoading({
                 title: res.data.errorInfo
             })

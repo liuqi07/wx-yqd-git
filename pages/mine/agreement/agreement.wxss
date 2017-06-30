@@ -1,0 +1,36 @@
+/* agreement.wxss */
+view{
+    font-family: "Helvetica Neue","Hiragino Sans GB W3","Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+}
+.argumentContain{
+    margin-bottom: 60rpx;
+}
+.logoContain{
+    text-align: center;
+    width: 100%;
+    margin-top:60rpx; 
+}
+.logo{
+    width: 349rpx;
+    height: 168rpx;    
+}
+.newText{
+    padding: 0rpx 48rpx;
+}
+.h2{
+    text-align:center;
+    margin-top:40rpx;
+    font-size:30rpx;
+    margin-bottom:20rpx;
+    font-weight:600;
+}
+.arct{
+    color:#666;
+    text-indent:52rpx;
+    font-size:26rpx;
+    line-height:40rpx;
+}
+.h4{
+    font-size:28rpx;
+    line-height:60rpx;
+}

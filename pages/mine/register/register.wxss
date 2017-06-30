@@ -10,12 +10,12 @@ page{
   padding-top: 20rpx;
 }
 .icon{
-  width: 40rpx;
-  height: 50rpx;
+  width: 30rpx;
+  height: 40rpx;
   display: inline-block;
   position:absolute;
   left:20rpx;
-  top:25rpx;
+  top:30rpx;
 }
 .clear{
   width: 40rpx;
@@ -33,7 +33,7 @@ page{
 
 }
 .mark{
-  width: 40rpx;
+  width: 30rpx;
   height: 40rpx;
   top: 30rpx;
   
@@ -44,9 +44,9 @@ page{
   top: 29rpx;
 }
 .invitCode{
-  width: 29rpx;
-  height: 26rpx;
-  top: 37rpx;
+  width: 30rpx;
+  height: 28rpx;
+  top: 36rpx;
 }
 .check{
   color: red;
@@ -78,14 +78,17 @@ div .wx-checkbox-input{
   width: 84%;
   margin:40rpx  auto;
   height: 100rpx;
-  /*border-radius: 50rpx;*/
-  background: #116fba;
+  background: -webkit-linear-gradient(left , rgb(14, 109, 183) 7% , rgb(62, 153, 230) 83%);
   line-height: 100rpx;
   border: none;
   color: #fff;
   font-size: 36rpx;
+  border-radius:10rpx;
+  text-align:center;
 }
-
+.btnShare.disable{
+    background: #e4e4e4;
+}
 /*weUI*/
 .weui-search-bar {
   position: relative;

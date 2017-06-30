@@ -11,20 +11,20 @@
                 <view class="intro-circle">
                     <text class="title">预期年化率</text>
                     <view>
-                        <text class="pre">{{investList.InterestRateOfYear}}</text>
+                        <text class="pre">{{proSource==1?productDetail.rateByYear:investList.InterestRateOfYear}}</text>
                         <text>%</text>
                     </view>
                     <text class="txt">剩余可投金额(元)</text>
-                    <text class="amount">{{investList.NotInvestedAmount}}</text>
+                    <text class="amount">{{proSource==1?productDetail.surplus:investList.NotInvestedAmount}}</text>
                 </view>
                 <view class="intro-list">
                     <view>
-                        <view class="item">产品期限：<text>{{investList.ProjectPeriod + (investList.ProjectPeriodUnit=='月'?'个月':'天')}}</text></view>
-                        <view class="item">发售金额：<text>{{investList.ProjectAmount + '元'}}</text></view>
+                        <view class="item">产品期限：<text>{{proSource==1?(productDetail.investmentCycle+'个月'):(investList.ProjectPeriod + (investList.ProjectPeriodUnit=='月'?'个月':'天'))}}</text></view>
+                        <view class="item">发售金额：<text>{{proSource==1?(productDetail.investmentMoneyTotal+'元'):(investList.ProjectAmount + '元')}}</text></view>
                     </view>
                     <view>
-                        <view class="item"><text>{{investList.MinimumInvestAmount + '起投'}}</text></view>
-                        <view class="item"><text>{{investList.RepayTyepName}}</text></view>
+                        <view class="item"><text>{{(proSource==1?productDetail.MinimumInvestAmount:investList.MinimumInvestAmount) + '起投'}}</text></view>
+                        <view class="item" wx:if="{{proSource!=1}}"><text>{{investList.RepayTyepName}}</text></view>
                     </view>
                 </view>
             </view>
@@ -32,10 +32,10 @@
             <view class="complete-per">
                 <view class="title">
                     <view class="title-l">
-                        <text>疯抢中</text><text class="time">（{{investList.EndInvestmentTime}}）</text>
+                        <text>疯抢中</text><text class="time">（{{proSource==1?productDetail.endTime:investList.EndInvestmentTime}}）</text>
                     </view>
                     <view class="title-r">
-                        <text>已抢 </text><text class="per">{{investList.InvestmentProportion}}%</text>
+                        <text>已抢 </text><text class="per">{{proSource==1?productDetail.percent:investList.InvestmentProportion}}%</text>
                     </view>
                 </view>
                 <progress class="bar" percent="{{investList.InvestmentProportion}}" stroke-width="4" color="#e1e1e1" activeColor="#ff6d4b" active="true"/>
@@ -51,11 +51,11 @@
                         <text class="orange">{{ prospectiveEarnings}}</text>
                         <text> 元</text>
                     </view>
-                    <view class="balance-header-r">
+                    <!--<view class="balance-header-r">
                         <text>账户余额：</text>
                         <text class="orange">11021.55</text>
                         <text> 元</text>
-                    </view>
+                    </view>-->
                 </view>
                 <view class="balance-input">
                     <input class="ipt" type="number" bindconfirm="onDoneTap" bindinput="onInputChange" placeholder="输入金额：100元起投，100元递增" placeholder-class="placeholder" cursor-spacing="50" confirm-type="done"/>
@@ -143,24 +143,21 @@
                             <view><text>金额</text></view>
                             <view><text>状态</text></view>
                         </view>
-                        <view class="list-content">
-                            <view><text>云安鑫-Y2017051912001</text></view>
-                            <view><text>24个月</text></view>
-                            <view><text>86681.93</text></view>
-                            <view><text>已满额</text></view>
-                        </view>
-                        <view class="list-content">
-                            <view><text>云安鑫-Y2017051912001</text></view>
-                            <view><text>24个月</text></view>
-                            <view><text>86681.93</text></view>
-                            <view><text>已满额</text></view>
-                        </view>
-                        <view class="list-content">
-                            <view><text>云安鑫-Y2017051912001</text></view>
-                            <view><text>24个月</text></view>
-                            <view><text>86681.93</text></view>
-                            <view><text>已满额</text></view>
-                        </view>
+                        <block wx:for="{{productList}}">
+                            <view class="list-content">
+                                <view><text>{{item.AssetName}}</text></view>
+                                <view><text>{{item.DeadLine+'个月'}}</text></view>
+                                <view><text>{{item.Amount}}</text></view>
+                                <view><text>{{item.Status}}</text></view>
+                            </view>
+                            <!-- 假数据 -->
+                            <!-- <view class="list-content">
+                                <view><text>云安鑫-Y2017051912001</text></view>
+                                <view><text>24个月</text></view>
+                                <view><text>86681.93</text></view>
+                                <view><text>已满额</text></view>
+                            </view> -->
+                        </block>
                     </view>
                 </swiper-item>
                 <swiper-item>
@@ -170,21 +167,19 @@
                             <view><text>出借金额(元)</text></view>
                             <view><text>出借时间</text></view>
                         </view>
-                        <view class="record-content">
-                            <view><text>a1*******87</text></view>
-                            <view><text>138123.09</text></view>
-                            <view><text>2017-04-26 14:21:29</text></view>
-                        </view>
-                        <view class="record-content">
-                            <view><text>a1*******87</text></view>
-                            <view><text>138123.09</text></view>
-                            <view><text>2017-04-26 14:21:29</text></view>
-                        </view>
-                        <view class="record-content">
-                            <view><text>a1*******87</text></view>
-                            <view><text>138123.09</text></view>
-                            <view><text>2017-04-26 14:21:29</text></view>
-                        </view>
+                        <block wx:for="{{investRecords}}">
+                            <view class="record-content">
+                                <view><text>{{item.investPerson}}</text></view>
+                                <view><text>{{item.investMoney}}</text></view>
+                                <view><text>{{item.investDate}}</text></view>
+                            </view>
+                            <!-- 假数据 -->
+                            <!-- <view class="record-content">
+                                <view><text>a1*******87</text></view>
+                                <view><text>138123.09</text></view>
+                                <view><text>2017-04-26 14:21:29</text></view>
+                            </view> -->
+                        </block>
                         <!-- 饼状图 待定-->
                         <!--<view class="record-top">
                             <view class="top">
@@ -221,17 +216,121 @@
                 </swiper-item>
             </swiper>
         </view>
+        <!-- ---------------- 华丽的分割线 ---------------- -->
         <view class="content" wx:if="{{!subSwiperFlag}}">
             <view class="tab">
-                <view class="tab-item{{currentPage==0?' active':''}}" bindtap="onChangeTap" data-id="0">项目介绍</view>
-                <view class="tab-item{{currentPage==1?' active':''}}" bindtap="onChangeTap" data-id="1">项目列表</view>
+                <view class="tab-item{{currentPage==0?' active':''}}" bindtap="onChangeTap" data-id="0">风控信息</view>
+                <view class="tab-item{{currentPage==1?' active':''}}" bindtap="onChangeTap" data-id="1">参与人次</view>
             </view>
             <swiper class="sub-swiper" bindchange="subSwiperChange" current="{{currentPage}}">
                 <swiper-item>
-                    2.第一頁
+                    <!-- 风控信息 >> 项目简介 -->
+                    <view class="pro-info">
+                        <view class="pro-info-header" catchtap="onChangeArrowTap">
+                            <text>项目简介</text>
+                            <image class="img" src="{{arrowFlag?'/images/icons/arrowdown.png':'/images/icons/arrowup.png'}}"></image>
+                        </view>
+                        <view class="pro-info-content" wx:if="{{arrowFlag}}">
+                            <block wx:for="{{proInfoList}}">
+                                <view class="row">
+                                    <text>{{item.Key}}</text>
+                                    <text>{{item.Value}}</text>
+                                </view>
+                                <!-- 假数据 -->
+                                <!--<view class="row">
+                                    <text>产品名称：</text>
+                                    <text>云安鑫-Y2017051912001</text>
+                                </view>
+                                <view class="row">
+                                    <text>产品类型：</text>
+                                    <text>信贷</text>
+                                </view>
+                                <view class="row">
+                                    <text>身份证号：</text>
+                                    <text>44**************69</text>
+                                </view>
+                                <view class="row">
+                                    <text>预期年化收益率：</text>
+                                    <text>10.50%</text>
+                                </view>
+                                <view class="row">
+                                    <text>抢标开始时间：</text>
+                                    <text>2017/06/19 15:57:24</text>
+                                </view>
+                                <view class="row">
+                                    <text>计息时间：</text>
+                                    <text>满标后次日开始计息</text>
+                                </view>
+                                <view class="row">
+                                    <text>还款方式：</text>
+                                    <text>一次还本付息</text>
+                                </view>
+                                <view class="row">
+                                    <text>借款人姓名：</text>
+                                    <text>袁**</text>
+                                </view>
+                                <view class="row">
+                                    <text>贷款金额：</text>
+                                    <text>45000.00</text>
+                                </view>
+                                <view class="row">
+                                    <text>贷款期限：</text>
+                                    <text>12个月</text>
+                                </view>-->
+                            </block>
+                        </view>
+                    </view>
+                    <view class="risk-ctrl">
+                        <view class="risk-ctrl-header" catchtap="onChangeArrowTap">
+                            <text>风控信息</text>
+                            <image class="img" src="{{!arrowFlag?'/images/icons/arrowdown.png':'/images/icons/arrowup.png'}}"></image>
+                        </view>
+                        <view class="risk-ctrl-content" wx:if="{{!arrowFlag}}">
+                            <block wx:for="{{winctrInfolist}}">
+                                <view class="item">
+                                    <text>{{item.Key}}</text>
+                                    <text>{{item.Value}}</text>
+                                </view>
+                                <!-- 假数据 -->
+                                <!--<view class="item">
+                                    <text>1、实地尽职调查</text>
+                                    <text>云钱袋及专业的信审团队严格审核包括但不限于借款人的车辆抵押情况、工作信息、银行流水等资料的真实性。</text>
+                                </view>
+                                <view class="item">
+                                    <text>1、实地尽职调查</text>
+                                    <text>云钱袋及专业的信审团队严格审核包括但不限于借款人的车辆抵押情况、工作信息、银行流水等资料的真实性。</text>
+                                </view>
+                                <view class="item">
+                                    <text>1、实地尽职调查</text>
+                                    <text>云钱袋及专业的信审团队严格审核包括但不限于借款人的车辆抵押情况、工作信息、银行流水等资料的真实性。</text>
+                                </view>
+                                <view class="item">
+                                    <text>1、实地尽职调查</text>
+                                    <text>云钱袋及专业的信审团队严格审核包括但不限于借款人的车辆抵押情况、工作信息、银行流水等资料的真实性。</text>
+                                </view>-->
+                            </block>
+                        </view>
+                    </view>
                 </swiper-item>
                 <swiper-item>
-                    2.第二頁
+                    <!-- 参与人次 -->
+                    <view class="person-time">
+                        <view class="person-time-header">
+                            <view><text>出借人</text></view>
+                            <view><text>出借金额(元)</text></view>
+                            <view><text>出借时间</text></view>
+                        </view>
+                        <view class="person-time-content">
+                            <view><text>a1*******87</text></view>
+                            <view><text>138123.09</text></view>
+                            <view><text>2017-04-26 14:21:29</text></view>
+                        </view>
+                        <view class="person-time-content">
+                            <view><text>a1*******87</text></view>
+                            <view><text>138123.09</text></view>
+                            <view><text>2017-04-26 14:21:29</text></view>
+                        </view>
+                    </view>
                 </swiper-item>
             </swiper>
         </view>

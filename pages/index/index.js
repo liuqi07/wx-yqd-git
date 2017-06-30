@@ -38,12 +38,12 @@ Page({
                     // 用户点击拒绝授权会进入fail回调
                     console.log('拒绝授权');
                     // 首次拒绝不会执行此方法
-                    if (app.globalData.firstFlag_g) {
+                    // if (app.globalData.firstFlag_g) {
                         // 弹窗提示用户手动开启授权
                         that.setData({
                             dialogFlag: true
                         });
-                    }
+                    // }
                     app.globalData.firstFlag_g = true;
                 }
             })
@@ -88,25 +88,42 @@ Page({
 
     // 弹框点击允许授权
     onAllowTap(ev) {
-        wx.openSetting({
-            success: (res) => {
-                // console.log(res);
-                this.setData({
-                    dialogFlag: false
-                });
-                var userInfo = util.getUserInfo();
-                console.log(userInfo);
-                if (userInfo.nickName) {
-                    wx.setStorageSync('session', 1);
-                    wx.navigateTo({
-                        url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+        let session = wx.getStorageSync('session');
+        if (!session){
+            wx.openSetting({
+                success: (res) => {
+                    // console.log(res);
+                    this.setData({
+                        dialogFlag: false
                     });
+                    var info = {};
+                    // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
+                    wx.getUserInfo({
+                        success: function (res) {
+                            var code = wx.getStorageSync('code');
+                            // var userInfo = res.userInfo;
+                            var data = {
+                                code: code,
+                                encryptedData: res.encryptedData,
+                                iv: res.iv
+                            };
+                            //发起网络请求
+                            var url = app.globalData.webUrl + 'wechatApplet/authorization';
+                            // 获取用户唯一标识openid
+                            util.http(url, that.getStatus, data, 'POST');
+                        }
+                    });
+                },
+                fail: (res) => {
+                    console.log('openSetting fail');
                 }
-            },
-            fail: (res) => {
-                console.log('openSetting fail');
-            }
-        });
+            });
+        }
+        else if(session===3) {
+            wx.switchTab({
+                url: '../mine/mine'
+            })
+        }
        
         // var session = wx.getStorageSync('session');
         // // 未授权
@@ -119,6 +136,23 @@ Page({
         //         url: '../mine/mine',
         //     })
         // }
+    },
+
+    //wx.setting后判断是否是已注册用户
+    getStatus(res) {
+        wx.setStorageSync('openId', res.data['3rd_session']);
+        if (res.data.token) {//注册刷新本页
+            wx.setStorageSync('token', res.data['token']);
+            wx.setStorageSync('session', 2);
+            wx.switchTab({
+                url: '../mine/mine'
+            })
+        } else {//未注册跳转注册页面
+            wx.setStorageSync('session', 1);
+            wx.navigateTo({
+                url: '../mine/register/register'
+            });
+        }
     },
 
     // 跳转详情页

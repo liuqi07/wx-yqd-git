@@ -51,10 +51,10 @@
     <view class="recommendation">
         <view class="recommendation-header">
             <text class="title">精品推荐</text>
-            <view class="more">
+            <!--<view class="more">
                 <text>更多</text>
                 <text>》</text>
-            </view>
+            </view>-->
         </view>
         <view class="recommendation-content">
             <!--<template is="invest-tpl"></template>-->

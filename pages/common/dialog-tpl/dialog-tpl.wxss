@@ -44,7 +44,7 @@
     justify-content: space-around;
     line-height: 100rpx;
     margin-top: 26rpx;
-    border-top: 1px solid #d2d3d5;
+    border-top: 1rpx solid #d2d3d5;
 }
 .button text {
     width: 50%;
@@ -53,7 +53,7 @@
     font-size: 32rpx;
 }
 .button .refuse {
-    border-right: 1px solid #d2d3d5;
+    border-right: 1rpx solid #d2d3d5;
     color: #000;
 }
 .button .allow {

@@ -11,8 +11,8 @@
       <view class="head">
         <image class="logo" src="/images/register/logo@2x.png"></image>
         <view class="title">
-          <text>雀巢咖啡</text>
-          
+          <text>{{userInfo.nickName}}</text>
+
         </view>
         <view class="btnLogin" bindtap="loginOut"> 退出登录</view>
       </view>
@@ -21,8 +21,8 @@
           <text class="accountMoney">{{totalMoney}}</text>
           <!--<image  class="iconInfo" src="/images/register/iphone.png"></image>-->
           <image bindtap="info" class="iconInfo" src="/images/register/info.png"></image>
-        </view>   
-        
+        </view>
+
         <text class="moneyDes">账户余额（元）</text>
       </view>
       <view class="accountDetial">
@@ -36,7 +36,7 @@
         </view>
         <view class="accountList">
           <text class="moneyCount">{{payamount}}</text>
-          <text class="moneyDes">待还余额（元）</text>
+          <text class="moneyDes">体验金（元）</text>
         </view>
       </view>
     </view>
@@ -47,7 +47,7 @@
       </view>
       <view class="accountList" bindtap="reward">
         <image class="rewardImg" src="/images/register/reward.png"></image>
-        <text class="moneyCount rewardDtl">活动奖励</text>
+        <text class="moneyCount rewardDtl">红包礼券</text>
       </view>
     </view>
     <view class="inviteContain">
@@ -55,16 +55,16 @@
       <view class="inviteReward">每邀请一人获得收益，最高获得15000元</view>
       <view class="inviteCode">
         <text>复制邀请码：</text>
-        <text selectable="true">123821738</text>
+        <text selectable="true">{{userCode}}</text>
       </view>
     </view>
   </view>
   <view class="account loginAccount" hidden="{{!loginStatus}}">
     <image class="logoImg" src="/images/register/logo.png"></image>
     <view>
-      <button bindtap="login" hover-class="none" class="loginBtn">登陆/注册</button>
+      <button bindtap="login" hover-class="none" class="loginBtn">登录/注册</button>
     </view>
-    
+
   </view>
 
 </view>

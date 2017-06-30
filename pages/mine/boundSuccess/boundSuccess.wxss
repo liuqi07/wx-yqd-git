@@ -1,0 +1,26 @@
+/* boundSuccess.wxss */
+.contain{
+  text-align: center;
+  padding-top: 84rpx;
+}
+.successImg{
+  width: 178rpx;
+  height: 212rpx;
+
+}
+.tip{
+  font-size: 40rpx;
+  color: #000;
+  margin-top: 60rpx;
+}
+.title{
+  font-size: 28rpx;
+  color: #888888;
+  line-height: 60rpx;
+}
+.bottom{
+  font-size: 24rpx;
+  color: #909090;
+  margin-top: 128rpx;
+  text-align: center;
+}

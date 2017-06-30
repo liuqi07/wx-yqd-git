@@ -1,15 +1,15 @@
 {
     "pages": [
         "pages/index/index",
+        "pages/index/introduce/introduce",
         "pages/index/invest-detail/invest-detail",
-        "pages/test/test",
+        "pages/mine/experience/experience",
         "pages/mine/mine",
+        "pages/mine/reward/reward",
+        "pages/mine/agreement/agreement",
         "pages/mine/register/register",
         "pages/mine/authorize/authorize",
-        "pages/mine/reward/reward",
-        "pages/index/introduce/introduce",
-        "pages/mine/experience/experience",
-        "pages/animation/animation"
+        "pages/mine/boundSuccess/boundSuccess"
     ],
     "window": {
         "navigationBarBackgroundColor": "#fff",

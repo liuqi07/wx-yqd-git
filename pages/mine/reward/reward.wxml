@@ -1,37 +1,83 @@
-<!--reward.wxml-->
-<view class="body">
-  <view class="nav bc_white">
-    <view class="default {{selected?'active':''}}" bindtap="selected">
-    <text>我的红包</text></view>
-    <view class="default {{selected1?'active':''}}" bindtap="selected1"><text>我的加息券</text></view>
-    <view class="default {{selected2?'active':''}}" bindtap="selected2"><text>我的奖励</text></view>
+<view>
+  <view class="nav">
+    <view class="default {{selected?'active':''}}" bindtap="selected">我的红包 （{{tickCount}}）</view>
+    <view class="default {{selected1?'active':''}}" bindtap="selected1">我的奖品（{{rewardCount}}）</view>
   </view>
-  <view  hidden="{{!selected}}">
-    <view class="tick">
+  <!--我的红包-->
+  <view hidden="{{!selected}}">
+    <!--<view class="title">
+      <image class="titleIcon" src="/images/register/titleIcon.png"></image>
+      <text>礼券限出借车贷、云信贷、信用散标使用。</text>
+    </view>
+    <view class="tick" wx:for="{{tickArr}}">
       <view class="tickL">
-        <view class="lTop">
-          <view class="money">￥<text>8</text></view>
-          <view class="moneyRule">
-            <view class="redTick">
-              <image class="birth" src="/images/register/redTick.png"></image>
-            生日红包
-            </view>
-            <view>单笔满1600元可用</view>
-          </view>
-        </view>
-        <view class="lBot">限3个月（90天）车贷、云信贷、信用散标、云安心使用</view>
+        <image class="birth" src="/images/register/birth.png"></image>
+        <text>生日红包</text>
       </view>
       <view class="tickR">
-        <image class="askIcon" src="/images/register/askIcon.png"></image>
-        <view class="packet">激活红包</view>
-        <view class="packetInfo">
-          自发放之日起<text>7</text>日内
+        <view class="money">
+          <text>￥ 800 </text>[单笔满40000可用]
+        </view>
+        <view class="rule">
+          限出借3个月（90天）以上产品
+        </view>
+        <view class="time">
+          使用有效期： 2z017.6.16 09:00至2017.6.23 09:00
         </view>
       </view>
+      <image class="used" src="{{angleSrc}}"></image>
+    </view>-->
+    <view hidden="{{noneData}}" class="noneData">
+      <image class="noneBg" src="/images/register/noneBg.png"></image>
+      <view class="tip">暂无可用红包</view>
+
+    </view>
+  </view>
+
+
+  <!--我的奖品-->
+  <view hidden="{{!selected1}}">
+
+    <!--<view class="reward {{useState?'usedColor':''}}" wx:for="{{tickArr}}">
+      <view class="rewardT">
+        <image class="sunBlock" src="/images/register/sunBlock.png"></image>
+        <view class="gift">
+          <view>
+            <text class="h2">精品粽子</text>
+            <text>[一盒]</text>
+          </view>
+          <view class="tickCode">
+            <text>券码：</text>
+            <text>21356213737821</text>
+          </view>
+        </view>
+
+
+      </view>
+      <view class="rewardB">
+        <view>
+          <text>说明：</text>
+          <text>填写</text>
+          <text>我的地址</text>
+          <text>，云钱袋客服会根据地址快递过去哦！</text>
+          <text>，云钱袋客服会根据地址快递过去哦！</text>
+        </view>
+
+      </view>
+      <image class="used" src="{{angleSrc}}"></image>
+    </view>-->
+    <view hidden="{{noneData}}" class="noneData">
+        <image class="noneBg" src="/images/register/noneBg.png"></image>
+        
+        <view class="tip">暂无奖品</view>
     </view>
 
-  
   </view>
-  <view hidden="{{!selected1}}">f2</view>
-   <view  hidden="{{!selected2}}">f3</view>
+
+  <!--缺省图-->
+  <!--<view hidden="{{noneData}}" class="noneData">
+    <image class="noneBg" src="/images/register/noneBg.png"></image>
+    <view class="tip">暂无可用红包</view>
+    <view class="tip">暂无奖品</view>
+  </view>-->
 </view>

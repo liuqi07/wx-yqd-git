@@ -11,7 +11,14 @@ Page({
         currentPage: 0,
         prospectiveEarnings: 0, // 预期收益
         dialogFlag: false,
-        subSwiperFlag: true, // proSource=1?false:true => 2,3,4
+        subSwiperFlag: false, // proSource=1?false:true => 2,3,4
+        productInfoDetail: [], // 三列，项目介绍
+        investRecords: [], // 三列：出借记录
+        productList: [], // 三列，项目列表
+        proInfoList: [], // proSource==1
+        winctrInfolist: [], // proSource==1
+        productDetail: {}, // proSource==1
+        arrowFlag: true,
     },
     
     onLoad: function (options) {
@@ -20,6 +27,13 @@ Page({
             projectName = options.projectName;
         // this.getWindowHeight();
         var subSwiperFlag = (proSource==1)?false:true; // 1 两列 2、3、4 三列
+        if(proSource==1){
+            let url = app.globalData.webUrl + 'wechatApplet/getProductDetail/CPSB112170427581996' // + this.data.proCode;
+            util.http(url, this.getDetailData);
+        }else {
+            let url = app.globalData.webUrl + 'wechatApplet/getProductDetailYJS/' + proCode + '?proSource=' + proSource;
+            util.http(url, this.getCurrData);
+        }
 
         this.setData({
             navigateTitle: projectName, // 设置标题栏
@@ -27,8 +41,15 @@ Page({
             proSource: options.proSource,
             subSwiperFlag: subSwiperFlag
         });
-        this.getCurrData(proCode, proSource);
 
+    },
+
+
+    // 获取当前页面数据
+    getCurrData(res) {
+        this.setData({
+            investList: res.data.data.productInfoDetail
+        });
     },
 
     // 输入框点击完成时
@@ -46,6 +67,11 @@ Page({
             console.log('error');
         }
     },
+    onChangeArrowTap () {
+        this.setData({
+            arrowFlag: !this.data.arrowFlag
+        });
+    },
     // swiper切换时触发
     swiperChange (ev) {
         let currentPage = ev.detail.current;
@@ -58,6 +84,21 @@ Page({
             util.http(proListUrl, this.getProListData);
             util.http(proRecordUrl, this.getProRecordData);
         }
+       if(currentPage==1 && this.data.proSource==1){
+            let url = app.globalData.webUrl + 'wechatApplet/getProductDetail/CPSB112170427581996' // + this.data.proCode;
+            util.http(url, this.getDetailData);
+        }
+    },
+    // 获取proSource==1的标的数据
+    getDetailData(res){
+        let proInfoList = res.data.getProInfolist;
+        let winctrInfolist = res.data.winctrInfolist;
+        let productDetail = res.data.productDetail;
+        this.setData({
+            proInfoList: proInfoList,
+            winctrInfolist: winctrInfolist,
+            productDetail: productDetail
+        });
     },
     // 获取项目介绍数据
     getProInfoData (res) {
@@ -67,7 +108,10 @@ Page({
         });
     },
     getProListData (res) {
-        
+        var productList = res.data.data.data;
+        this.setData({
+            productList: productList
+        });
     },
     getProRecordData(res) {
         let investRecords = res.data.data.investRecords; // []
@@ -110,13 +154,6 @@ Page({
                     // 用户点击拒绝授权会进入fail回调
                     console.log('fail');
                     // 首次拒绝不会执行此方法
-                    // if (app.globalData.firstFlag_g) {
-                    //     // 弹窗提示用户手动开启授权
-                    //     that.setData({
-                    //         dialogFlag: true
-                    //     });
-                    // }
-                    // app.globalData.firstFlag_g = true;
                     // 弹窗提示用户手动开启授权
                     function goRegisterPage() {
                         var userInfo = util.getUserInfo();
@@ -127,9 +164,9 @@ Page({
                             });
                         }
                     }
-                    if(app.globalData.firstFlag_g){
+                    // if(app.globalData.firstFlag_g){
                         util.authorizeConfirm(goRegisterPage);
-                    }
+                    // }
                     app.globalData.firstFlag_g = true;
                 }
             })
@@ -164,33 +201,70 @@ Page({
 
     // 弹框点击允许授权
     onAllowTap(ev) {
-        wx.openSetting({
-            success: (res) => {
-                // console.log(res);
-                this.setData({
-                    dialogFlag: false
-                });
-                var userInfo = util.getUserInfo();
-                if (userInfo.nickName) {
-                    wx.setStorageSync('session', 1);
-                    wx.navigateTo({
-                        url: '../mine/register/register?userInfo=' + JSON.stringify(userInfo)
+        let session = wx.getStorageSync('session');
+        if (!session) {
+            wx.openSetting({
+                success: (res) => {
+                    var info = {};
+                    // 用户已经同意小程序获取用户信息，后续调用 wx.getUserInfo 接口不会弹窗询问
+                    wx.getUserInfo({
+                        success: function (res) {
+                            var code = wx.getStorageSync('code');
+                            // var userInfo = res.userInfo;
+                            var data = {
+                                code: code,
+                                encryptedData: res.encryptedData,
+                                iv: res.iv
+                            };
+                            //发起网络请求
+                            var url = app.globalData.webUrl + 'wechatApplet/authorization';
+                            // 获取用户唯一标识openid
+                            util.http(url, that.getStatus, data, 'POST');
+                        }
                     });
+                },
+                fail: (res) => {
+                    console.log('openSetting fail');
                 }
-            },
-            fail: (res) => {
-                console.log('openSetting fail');
-            }
-        });
+            });
+        }
+        else if (session === 3) {
+            this.showTips();
+        }
     },
+
+    //wx.setting后判断是否是已注册用户
+    getStatus(res) {
+        wx.setStorageSync('openId', res.data['3rd_session']);
+        if (res.data.token) {//注册刷新本页
+            wx.setStorageSync('token', res.data['token']);
+            wx.setStorageSync('session', 2);
+            this.showTips();
+        } else {//未注册跳转注册页面
+            wx.setStorageSync('session', 1);
+            wx.navigateTo({
+                url: '../mine/register/register'
+            });
+        }
+    },
+
     // 输入框内容改变时触发
     onInputChange(ev) {
         console.log(ev);
-        var ProjectPeriodUnit = this.data.investList.ProjectPeriodUnit, //期限单位：年 or 月
+        let ProjectPeriodUnit = this.data.investList.ProjectPeriodUnit, //期限单位：年 or 月
             ProjectPeriod = this.data.investList.ProjectPeriod, // 期限
             InterestRateOfYear = this.data.investList.InterestRateOfYear; // 收益
+        var prospectiveEarnings = ((ev.detail.value * InterestRateOfYear / 100) * ((ProjectPeriodUnit == '天') ? ProjectPeriod / 365 : ProjectPeriod / 12)).toFixed(2)
+        if (prospectiveEarnings > (this.data.proSource == 1 ? this.data.productDetail.surplus : this.data.investList.NotInvestedAmount)){
+            wx.showToast({
+                title: '超出剩余可投金额',
+                icon: 'success',
+                duration: 2000
+            });
+            prospectiveEarnings = prospectiveEarnings.substr(0, prospectiveEarnings.length-1);
+        }
         this.setData({
-            prospectiveEarnings: (ev.detail.value * InterestRateOfYear) * ((ProjectPeriodUnit == '月') ? ProjectPeriodUnit / 12 : ProjectPeriodUnit / 1)
+            prospectiveEarnings: prospectiveEarnings
         });
     },
 
@@ -275,21 +349,6 @@ Page({
                 animationData: animation.export()
             });
         }
-    },
-
-    // 获取当前页面数据
-    getCurrData(proCode, proSource) {
-        var that = this;
-        wx.request({
-            url: app.globalData.webUrl + 'wechatApplet/getProductDetailYJS/' + proCode + '?proSource=' + proSource,
-            method: 'GET',
-            success: function (res) {
-                console.log(res);
-                that.setData({
-                    investList: res.data.data.productInfoDetail
-                });
-            }
-        })
     },
 
     /**

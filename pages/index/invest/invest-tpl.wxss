@@ -16,7 +16,7 @@
     color: #666;
     font-size: 28rpx;
     letter-spacing: 3rpx;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1rpx solid #EEEEEE;
     padding: 0 20rpx;
 }
 .invest-header-per .per {
@@ -54,5 +54,4 @@
     line-height: 96rpx;
     color: #394675;
     font-size: 40rpx;
-    font-weight: 800;
 }
